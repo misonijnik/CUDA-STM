@@ -55,13 +55,13 @@ endif
 all: TestSTM
 
 dependents:
-	-cd /home/alexander/cuda-workspace/STM/Debug && $(MAKE) all
+	-cd /home/alexander/GitHib/CUDA-STM/STM/Debug && $(MAKE) all
 
 # Tool invocations
-TestSTM: $(OBJS) $(USER_OBJS) /home/alexander/cuda-workspace/STM/Debug/libSTM.a
+TestSTM: $(OBJS) $(USER_OBJS) /home/alexander/GitHib/CUDA-STM/STM/Debug/libSTM.a
 	@echo 'Building target: $@'
 	@echo 'Invoking: NVCC Linker'
-	/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/cuda-workspace/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM" $(OBJS) $(USER_OBJS) $(LIBS)
+	/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -72,6 +72,6 @@ clean:
 
 .PHONY: all clean dependents
 .SECONDARY:
-/home/alexander/cuda-workspace/STM/Debug/libSTM.a:
+/home/alexander/GitHib/CUDA-STM/STM/Debug/libSTM.a:
 
 -include ../makefile.targets

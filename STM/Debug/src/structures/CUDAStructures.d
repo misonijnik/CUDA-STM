@@ -115,4 +115,7 @@ src/structures/CUDAStructures.o : ../src/structures/CUDAStructures.cu \
     /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/surface_indirect_functions.h \
     /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/device_launch_parameters.h \
     ../src/structures/CUDAStructures.cuh \
-    ../src/structures/../helper/helper.cuh
+    ../src/structures/../helper/helper.cuh \
+    /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h \
+    /usr/include/stdint.h \
+    /usr/include/x86_64-linux-gnu/bits/wchar.h

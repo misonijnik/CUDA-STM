@@ -3,6 +3,8 @@
 
 int main(void)
 {
-	hey();
+	//hey2();
+	//hey();
+	testGlt();
 	return 0;
 }

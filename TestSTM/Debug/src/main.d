@@ -114,7 +114,10 @@ src/main.o : ../src/main.cu \
     /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/texture_indirect_functions.h \
     /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/surface_indirect_functions.h \
     /usr/local/cuda-8.0/bin/../targets/x86_64-linux/include/device_launch_parameters.h \
-    /home/alexander/cuda-workspace/STM/src/STM.cuh \
-    /home/alexander/cuda-workspace/STM/src/helper/helper.cuh \
-    /home/alexander/cuda-workspace/STM/src/structures/CUDAStructures.cuh \
-    /home/alexander/cuda-workspace/STM/src/structures/../helper/helper.cuh
+    /home/alexander/GitHib/CUDA-STM/STM/src/STM.cuh \
+    /home/alexander/GitHib/CUDA-STM/STM/src/helper/helper.cuh \
+    /home/alexander/GitHib/CUDA-STM/STM/src/structures/CUDAStructures.cuh \
+    /home/alexander/GitHib/CUDA-STM/STM/src/structures/../helper/helper.cuh \
+    /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h \
+    /usr/include/stdint.h \
+    /usr/include/x86_64-linux-gnu/bits/wchar.h

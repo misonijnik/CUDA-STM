@@ -1,0 +1,12 @@
+04:10:28 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+04:10:29 **** Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+04:10:32 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+04:10:32 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
