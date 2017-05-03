@@ -1,0 +1,121 @@
+#ifndef CUDASTM
+#define CUDASTM
+#include "helper/helper.cuh"
+#include "structures/CUDAStructures.cuh"
+
+
+typedef	struct
+{
+	unsigned version : 11;
+	unsigned owner : 19;
+	unsigned locked : 1;
+	unsigned pre_locked : 1;
+}LockEntry;
+
+
+template<typename T>
+struct ReadEntry
+{
+	void* cudaPtr;
+	T value;
+	unsigned version : 11;
+};
+
+template<typename T>
+struct WriteEntry
+{
+	void* cudaPtr;
+	T value;
+};
+
+template<typename T>
+class LocalMetadata
+{
+private:
+	CUDALinkedList<ReadEntry<T> > readSet;
+	CUDALinkedList<WriteEntry<T> > writeSet;
+	CUDALinkedList<LockEntry> lockSet;
+	bool abort;
+public:
+
+	LocalMetadata()
+	{
+		readSet = CUDALinkedList<ReadEntry<T> >();
+		writeSet = CUDALinkedList<WriteEntry<T> >();
+		lockSet = CUDALinkedList<LockEntry>();
+		abort = 0;
+	}
+
+	void txStart()
+	{
+
+	}
+
+	bool isAborted()
+	{
+		return abort;
+	}
+	CUDALinkedList<ReadEntry<T> > getReadSet()
+	{
+		return readSet;
+	}
+
+	CUDALinkedList<WriteEntry<T> > getWriteSet()
+	{
+		return writeSet;
+	}
+
+	CUDALinkedList<LockEntry> getLockSet()
+	{
+		return lockSet;
+	}
+};
+
+template<typename T>
+class GlobalLockTable
+{
+private:
+	CUDAArray<LockEntry> _glt;
+	T* _sharedMemPtr;
+	size_t _memSize;
+	size_t _wordSize;
+	size_t _numberWordLock;
+
+	__host__ __device__ unsigned long hash(T* cudaPtr)
+	{
+		//TODO control range
+		unsigned long tmp = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)))/(_wordSize*_numberWordLock);
+		return tmp;
+	}
+
+public:
+
+	__host__ GlobalLockTable(T* sharedMemPtr, size_t memSize, size_t numberWordLock)
+	{
+		_sharedMemPtr = sharedMemPtr;
+		_wordSize = sizeof(T);
+		_memSize = memSize*_wordSize;
+		_numberWordLock = numberWordLock;
+		_glt = CUDAArray<LockEntry>(_memSize/(_wordSize*_numberWordLock));
+	}
+
+	__device__ LockEntry getEntryAt(T* cudaPtr)
+	{
+		return _glt.At(hash(cudaPtr));
+	}
+
+	__device__ void setEntryAt(T* cudaPtr, LockEntry entry)
+	{
+		_glt.SetAt(hash(cudaPtr), entry);
+	}
+};
+
+
+__host__ int hey();
+__host__ int hey2();
+__host__ int testGlt();
+__global__ void testGltKernel(GlobalLockTable<int> g_lock, int* cudaPtr, int* val);
+__global__ void changeArray(CUDAArray<WriteEntry<int> > arr, int* ptr, int val);
+__device__ unsigned int GetVersion(LockEntry* entry );
+
+#endif

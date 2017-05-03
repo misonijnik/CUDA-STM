@@ -1,0 +1,6 @@
+#include "CUDAStructures.cuh"
+
+__device__ unsigned int GetVersion(LockEntry* entry )
+{
+	return (unsigned int)(entry->version);
+}

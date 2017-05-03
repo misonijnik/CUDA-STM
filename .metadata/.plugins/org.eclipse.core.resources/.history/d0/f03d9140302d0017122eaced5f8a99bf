@@ -1,0 +1,132 @@
+#ifndef CUDASTRUCTURES
+#define CUDASTRUCTURES
+
+#include "../helper/helper.cuh"
+#include <stdint.h>
+
+template<typename V>
+struct Node
+{
+    V value;
+    struct Node<V>* next;
+    struct Node<V>* prev;
+};
+
+template<typename T>
+class CUDALinkedList
+{
+private:
+	unsigned int Count;
+	Node<T>* head;
+
+public:
+
+	CUDALinkedList()
+	{
+		Count = 0;
+		head = NULL;
+	}
+
+	Node<T>* getHead()
+	{
+		return head;
+	}
+
+	void push(T val)
+	{
+		Node<T>* tmp = (Node<T>*)malloc(sizeof(Node<T>));
+		tmp->value = val;
+		tmp->next = head;
+		tmp->prev = NULL;
+		head->prev = tmp;
+		head = tmp;
+		Count++;
+	}
+
+	void deleteValue(Node<T>* node)
+	{
+		if(Count > 0)
+		{
+			node->prev->next = node->next;
+			node->next->prev = node->prev;
+			free(node);
+			--Count;
+		}
+	}
+};
+
+
+typedef union
+{
+	int iVal;
+	double dVal;
+	char chVal;
+}Value;
+
+typedef	struct
+{
+	unsigned version : 11;
+	unsigned owner : 19;
+	unsigned locked : 1;
+	unsigned pre_locked : 1;
+}LockEntry;
+
+__device__ unsigned int GetVersion(LockEntry* entry );
+
+template<typename T>
+struct ReadEntry
+{
+	void* cudaPtr;
+	T value;
+	unsigned version : 11;
+};
+
+template<typename T>
+struct WriteEntry
+{
+	void* cudaPtr;
+	T value;
+};
+
+class GlobalLockTable
+{
+private:
+	CUDAArray<LockEntry> _glt;
+	void* _sharedMemPtr;
+	size_t _memSize;
+	size_t _wordSize;
+	size_t _numberWordLock;
+
+	__host__ __device__ unsigned long hash(void* cudaPtr)
+	{
+		//must control range
+		unsigned long tmp = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)))/(_wordSize*_numberWordLock);
+		return tmp;
+	}
+
+public:
+
+	__host__ GlobalLockTable(void* sharedMemPtr, size_t memSize, size_t wordSize, size_t numberWordLock)
+	{
+		_sharedMemPtr = sharedMemPtr;
+		_memSize = memSize;
+		_wordSize = wordSize;
+		_numberWordLock = numberWordLock;
+		_glt = CUDAArray<LockEntry>(_memSize/(_wordSize*_numberWordLock));
+	}
+
+	__device__ LockEntry getEntryAt(void* cudaPtr)
+	{
+		return _glt.At(hash(cudaPtr));
+	}
+
+	__device__ void setEntryAt(void* cudaPtr, LockEntry entry)
+	{
+		_glt.SetAt(hash(cudaPtr), entry);
+	}
+
+
+};
+
+
+#endif

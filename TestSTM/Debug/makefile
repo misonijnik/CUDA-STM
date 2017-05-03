@@ -55,7 +55,7 @@ endif
 all: TestSTM
 
 dependents:
-	-cd /home/alexander/GitHib/CUDA-STM/STM/Debug && $(MAKE) all
+	-cd /home/alexander/GitHib/CUDA-STM/STM/Debug && $(MAKE) clean all
 
 # Tool invocations
 TestSTM: $(OBJS) $(USER_OBJS) /home/alexander/GitHib/CUDA-STM/STM/Debug/libSTM.a

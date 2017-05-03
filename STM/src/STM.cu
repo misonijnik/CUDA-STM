@@ -4,7 +4,7 @@
 #include "helper/helper.cuh"
 #include "structures/CUDAStructures.cuh"
 
-__host__ int hey(void)
+__host__ int hey()
 {
 	cudaError_t error = cudaDeviceSynchronize();
 	cudaCheckError();
@@ -22,9 +22,9 @@ __host__ int hey(void)
 	return 0;
 }
 
-__host__ int hey2(void)
+__host__ int hey2()
 {
-	CUDAArray<WriteEntry> hmm = CUDAArray<WriteEntry>(10);
+	CUDAArray<WriteEntry<int> > hmm = CUDAArray<WriteEntry<int> >(10);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	int* ptr;
@@ -32,22 +32,22 @@ __host__ int hey2(void)
 	int* ptr2 = ptr + 1;
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	printf("%u.\n", (uintptr_t)ptr);
-	printf("%u.\n", (uintptr_t)(ptr2));
-	printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+	printf("%lu.\n", (uintptr_t)ptr);
+	printf("%lu.\n", (uintptr_t)(ptr2));
+	printf("%lu.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
 	printf("%p.\n", (ptr2));
 	printf("%p.\n", (void*)(19662336));
 	changeArray<<<1,1>>>(hmm, ptr, 7);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 
-	WriteEntry* entryPtr;
+	WriteEntry<int>* entryPtr;
 	entryPtr = hmm.GetData();
 
 	cudaCheckError();
 
 	int* tmp = (int*)malloc(sizeof(int));
-	*tmp= entryPtr[0].value.iVal;
+	*tmp= entryPtr[0].value;
 	int intTmp = *tmp;
 	printf("Здравствуй, %d мир!\n", intTmp);
 	cudaCheckError();
@@ -58,7 +58,7 @@ __host__ int hey2(void)
 	return 0;
 }
 
-__host__ int testGlt(void)
+__host__ int testGlt()
 {
 	int* ptr;
 	cudaMalloc((void**)&ptr, sizeof(int)*4);
@@ -66,7 +66,7 @@ __host__ int testGlt(void)
 	cudaCheckError();
 	int* value;
 	cudaMalloc((void**)&value, sizeof(int));
-	GlobalLockTable g_lock = GlobalLockTable(ptr, sizeof(int)*4, sizeof(int), 1);
+	GlobalLockTable<int> g_lock = GlobalLockTable<int>(ptr, 4, 1);
 	testGltKernel<<<1,1>>>(g_lock, ptr, value);
 	int* val = (int*)malloc(sizeof(int));
 	cudaMemcpy(val, value, sizeof(int), cudaMemcpyDeviceToHost);
@@ -75,9 +75,9 @@ __host__ int testGlt(void)
 	return 0;
 }
 
-__global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val)
+__global__ void testGltKernel(GlobalLockTable<int> g_lock, int* cudaPtr, int* val)
 {
-	GLTEntry tmp;
+	GlobalLockEntry tmp;
 	tmp.locked = 1;
 
 	g_lock.setEntryAt(cudaPtr, tmp);
@@ -86,11 +86,11 @@ __global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val)
 	*val = g_lock.getEntryAt(cudaPtr).locked;
 }
 
-__global__ void changeArray(CUDAArray<WriteEntry> arr, int* ptr, int val)
+__global__ void changeArray(CUDAArray<WriteEntry<int> > arr, int* ptr, int val)
 {
-	WriteEntry tmp;
+	WriteEntry<int> tmp;
 	tmp.cudaPtr = ptr;
-	tmp.value.iVal = val;
+	tmp.value = val;
 
 	arr.SetAt(0, tmp);
 }

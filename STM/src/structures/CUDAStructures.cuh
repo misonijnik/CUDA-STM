@@ -4,77 +4,73 @@
 #include "../helper/helper.cuh"
 #include <stdint.h>
 
-typedef union
+template<typename V>
+struct Node
 {
-	int iVal;
-	double dVal;
-	char chVal;
-}Value;
+    V value;
+    struct Node<V>* next;
+    struct Node<V>* prev;
+};
 
-typedef	struct
-{
-	unsigned version : 11;
-	unsigned owner : 19;
-	unsigned locked : 1;
-	unsigned pre_locked : 1;
-} GLTEntry;
-
-__device__ unsigned int GetVersion(GLTEntry* entry );
-
-typedef struct ReadEntry
-{
-	void* cudaPtr;
-	Value value;
-	unsigned version : 11;
-} ReadEntry;
-
-typedef struct WriteEntry
-{
-	void* cudaPtr;
-	Value value;
-} WriteEntry;
-
-
-
-class GlobalLockTable
+template<typename T>
+class CUDALinkedList
 {
 private:
-	CUDAArray<GLTEntry> _glt;
-	void* _sharedMemPtr;
-	size_t _memSize;
-	size_t _wordSize;
-	size_t _numberWordLock;
-
-	__host__ __device__ unsigned long hash(void* cudaPtr)
-	{
-		//must control range
-		unsigned long tmp = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)))/(_wordSize*_numberWordLock);
-		return tmp;
-	}
+	unsigned int Count;
+	Node<T>* head;
 
 public:
 
-	__host__ GlobalLockTable(void* sharedMemPtr, size_t memSize, size_t wordSize, size_t numberWordLock)
+	CUDALinkedList()
 	{
-		_sharedMemPtr = sharedMemPtr;
-		_memSize = memSize;
-		_wordSize = wordSize;
-		_numberWordLock = numberWordLock;
-		_glt = CUDAArray<GLTEntry>(_memSize/(_wordSize*_numberWordLock));
+		Count = 0;
+		head = NULL;
 	}
 
-	__device__ GLTEntry getEntryAt(void* cudaPtr)
+	Node<T>* getHead()
 	{
-		return _glt.At(hash(cudaPtr));
+		return head;
 	}
 
-	__device__ void setEntryAt(void* cudaPtr, GLTEntry entry)
+	void push(T val)
 	{
-		_glt.SetAt(hash(cudaPtr), entry);
+		Node<T>* tmp = (Node<T>*)malloc(sizeof(Node<T>));
+		tmp->value = val;
+		tmp->next = head;
+		tmp->prev = NULL;
+		head->prev = tmp;
+		head = tmp;
+		Count++;
 	}
 
+	void deleteValue(Node<T>* node)
+	{
+		if(Count > 0)
+		{
+			node->prev->next = node->next;
+			node->next->prev = node->prev;
+			free(node);
+			--Count;
+		}
+	}
 
+	void Dispose()
+	{
+		if (Count > 0)
+		{
+			Node<T>* tmp = head;
+			while(head != NULL)
+			{
+				head = tmp->next;
+				free(tmp);
+			}
+		}
+	}
+
+	__host__ __device__  ~CUDALinkedList()
+	{
+
+	}
 };
-
 
 #endif

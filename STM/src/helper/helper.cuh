@@ -4,29 +4,25 @@
 #ifndef CUDAHELPER
 #define CUDAHELPER
 
-template<typename T> class CUDASet
+/*template<typename T>
+class CUDASet
 {
 private:
 	size_t realCount;
-	void __host__ __device__ upsize()
+	void __device__ upsize()
 	{
-		T* tmpPtr;
-		cudaError_t error = cudaMalloc((void**)&tmpPtr, 2*realCount*sizeof(T));
-		error = cudaDeviceSynchronize();
-		cudaMemcpy(tmpPtr, cudaPtr, sizeof(T)*(realCount), cudaMemcpyDeviceToDevice);
-		error = cudaDeviceSynchronize();
+		T* tmpPtr = malloc(2*realCount*sizeof(T));
+		memcpy(tmpPtr, cudaPtr, sizeof(T)*(realCount));
 		realCount *= 2;
-		cudaFree(cudaPtr);
-		error = cudaDeviceSynchronize();
+		free(cudaPtr);
 		cudaPtr = tmpPtr;
-		error = cudaGetLastError();
 	}
 
 public:
 	T* cudaPtr;
 	size_t Count;
 
-	__host__ __device__ CUDASet()
+	__host__ CUDASet()
 	{
 		Count = 0;
 		realCount = 4;
@@ -42,20 +38,20 @@ public:
 		realCount = set.realCount;
 	}
 
-	CUDASet(T* cpuPtr, unsigned int count)
+	__host__ CUDASet(T* cpuPtr, unsigned int count)
 	{
 		Count = count;
+		realCount = Count;
 		cudaError_t error = cudaMalloc((void**)&cudaPtr, realCount*sizeof(T));
 		error = cudaDeviceSynchronize();
 		cudaMemcpy(cudaPtr, cpuPtr, sizeof(T)*(Count), cudaMemcpyHostToDevice);
 		error = cudaDeviceSynchronize();
 		error = cudaGetLastError();
 	}
+};*/
 
-
-};
-
-template<typename T> class CUDAArray
+template<typename T>
+class CUDAArray
 {
 private:
 public:
@@ -64,7 +60,8 @@ public:
 
 	CUDAArray()
 	{
-
+		Length = 0;
+		cudaPtr = 0;
 	}
 
 	__host__ __device__ CUDAArray(const CUDAArray& arr)
@@ -73,7 +70,7 @@ public:
 		Length = arr.Length;
 	}
 
-	CUDAArray(T* cpuPtr, int length)
+	__host__ CUDAArray(T* cpuPtr, int length)
 	{
 		Length = length;
 		cudaError_t error = cudaMalloc((void**)&cudaPtr, length*sizeof(T));
@@ -82,21 +79,21 @@ public:
 		error = cudaDeviceSynchronize();
 	}
 
-	CUDAArray(int length)
+	__host__ CUDAArray(int length)
 	{
 		Length = length;
 		cudaError_t error = cudaMalloc((void**)&cudaPtr, length*sizeof(T));
 		error = cudaDeviceSynchronize();
 	}
 
-	T* GetData()
+	__host__ T* GetData()
 	{
 		T* arr = (T*)malloc(sizeof(T)*Length);
 		GetData(arr);
 		return arr;
 	}
 
-	void GetData(T* arr)
+	__host__ void GetData(T* arr)
 	{
 		cudaError_t error = cudaMemcpy(arr, cudaPtr, Length*sizeof(T), cudaMemcpyDeviceToHost);
 		error = cudaDeviceSynchronize();
@@ -134,6 +131,8 @@ template class CUDAArray<int>;
 template class CUDAArray<float>;
 
 #endif
+
+#define uniqueIndex() blockIdx.x* blockDim.x + threadIdx.x
 
 #define cudaCheckError() {\
 	cudaError_t e = cudaGetLastError(); \

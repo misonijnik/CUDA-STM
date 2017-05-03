@@ -10,3 +10,1284 @@ make: Цель «all» не требует выполнения команд.
 04:10:32 **** Incremental Build of configuration Debug for project TestSTM ****
 make all 
 make: Цель «all» не требует выполнения команд.
+12:10:12 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(58): error: no default constructor exists for class "CUDAArray<GLTEntry>"
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+
+1 error detected in the compilation of "/tmp/tmpxft_000066fd_00000000-7_CUDAStructures.cpp1.ii".
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+12:11:16 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+12:17:34 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+13:52:41 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+14:51:47 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(12): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(22): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(38): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(47): error: "typedef" may not be specified here
+
+../src/structures/CUDAStructures.cuh(52): error: expected a ";"
+
+../src/structures/CUDAStructures.cuh(113): error: identifier "GLTEntry" is undefined
+
+6 errors detected in the compilation of "/tmp/tmpxft_000021fd_00000000-7_CUDAStructures.cpp1.ii".
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+14:52:08 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(12): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(22): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(38): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(47): error: "typedef" may not be specified here
+
+../src/structures/CUDAStructures.cuh(52): error: expected a ";"
+
+5 errors detected in the compilation of "/tmp/tmpxft_00002251_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+14:52:11 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(12): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(22): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(38): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(47): error: "typedef" may not be specified here
+
+../src/structures/CUDAStructures.cuh(52): error: expected a ";"
+
+5 errors detected in the compilation of "/tmp/tmpxft_0000229b_00000000-7_CUDAStructures.cpp1.ii".
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+14:55:17 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(12): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(22): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(38): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(47): error: "typedef" may not be specified here
+
+../src/structures/CUDAStructures.cuh(52): error: expected a ";"
+
+5 errors detected in the compilation of "/tmp/tmpxft_00002305_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+14:57:06 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(12): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(22): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(38): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(52): error: expected a ";"
+
+4 errors detected in the compilation of "/tmp/tmpxft_0000235f_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+14:57:17 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(12): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(22): error: Node is not a template
+
+../src/structures/CUDAStructures.cuh(38): error: Node is not a template
+
+3 errors detected in the compilation of "/tmp/tmpxft_000023ac_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+15:00:57 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(13): error: type "CUDALinkedList<T>::Node::Node" may not have a template argument list
+
+../src/structures/CUDAStructures.cuh(14): error: type "CUDALinkedList<T>::Node::Node" may not have a template argument list
+
+../src/structures/CUDAStructures.cuh(19): error: template parameter "CUDALinkedList<T>::Node" may not have a template argument list
+
+../src/structures/CUDAStructures.cuh(29): error: template parameter "CUDALinkedList<T>::Node" may not have a template argument list
+
+../src/structures/CUDAStructures.cuh(45): error: template parameter "CUDALinkedList<T>::Node" may not have a template argument list
+
+5 errors detected in the compilation of "/tmp/tmpxft_00002433_00000000-7_CUDAStructures.cpp1.ii".
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+15:01:55 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(80): error: identifier "GLTEntry" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_000024c5_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+15:02:23 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(10): error: identifier "T" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_00002519_00000000-7_CUDAStructures.cpp1.ii".
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+15:02:38 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(80): error: identifier "GLTEntry" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_0000259b_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+15:52:32 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(50): error: identifier "count" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_000026ca_00000000-5_CUDAStructures.cpp4.ii".
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+15:52:50 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(80): error: identifier "GLTEntry" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_00002757_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+15:53:22 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+15:53:34 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+15:53:35 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+01:46:46 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(93): error: argument list for class template "ReadEntry" is missing
+
+1 error detected in the compilation of "/tmp/tmpxft_0000507e_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+01:46:51 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(93): error: argument list for class template "ReadEntry" is missing
+
+1 error detected in the compilation of "/tmp/tmpxft_000050c8_00000000-7_CUDAStructures.cpp1.ii".
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+01:47:36 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(93): error: identifier "T" is undefined
+
+../src/structures/CUDAStructures.cuh(93): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/structures/CUDAStructures.cuh(93): error: ReadSet is not a template
+
+../src/structures/CUDAStructures.cuh(93): error: identifier "T" is undefined
+
+4 errors detected in the compilation of "/tmp/tmpxft_00005119_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+01:47:42 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(93): error: identifier "T" is undefined
+
+../src/structures/CUDAStructures.cuh(93): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/structures/CUDAStructures.cuh(93): error: ReadSet is not a template
+
+../src/structures/CUDAStructures.cuh(93): error: identifier "T" is undefined
+
+4 errors detected in the compilation of "/tmp/tmpxft_00005163_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+01:53:30 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(88): error: expected a ";"
+
+1 error detected in the compilation of "/tmp/tmpxft_000051d5_00000000-7_CUDAStructures.cpp1.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+01:53:47 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(10): error: argument list for class template "WriteEntry" is missing
+
+../src/STM.cu(27): error: argument list for class template "WriteEntry" is missing
+
+../src/STM.cu(27): error: argument list for class template "WriteEntry" is missing
+
+../src/STM.cu(44): error: argument list for class template "WriteEntry" is missing
+
+../src/STM.cu(89): error: argument list for class template "WriteEntry" is missing
+
+../src/STM.cu(91): error: argument list for class template "WriteEntry" is missing
+
+6 errors detected in the compilation of "/tmp/tmpxft_0000525a_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+01:54:49 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(10): error: argument list for class template "WriteEntry" is missing
+
+../src/STM.cu(27): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(27): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(50): error: expression must have class type
+
+../src/STM.cu(89): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(93): error: expression must have class type
+
+6 errors detected in the compilation of "/tmp/tmpxft_000052c4_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+01:55:01 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(10): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(27): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(27): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(50): error: expression must have class type
+
+../src/STM.cu(89): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(93): error: expression must have class type
+
+6 errors detected in the compilation of "/tmp/tmpxft_00005314_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+01:58:21 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(10): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(27): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(27): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(50): error: expression must have class type
+
+../src/STM.cu(89): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(93): error: expression must have class type
+
+6 errors detected in the compilation of "/tmp/tmpxft_0000537c_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+02:00:36 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(10): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(50): error: expression must have class type
+
+../src/STM.cu(89): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(93): error: expression must have class type
+
+4 errors detected in the compilation of "/tmp/tmpxft_000053da_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+02:00:56 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(10): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(50): error: expression must have class type
+
+../src/STM.cu(93): error: expression must have class type
+
+3 errors detected in the compilation of "/tmp/tmpxft_0000542f_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+02:01:09 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(10): error: space required between adjacent ">" delimiters of nested template argument lists (">>" is the right shift operator)
+
+../src/STM.cu(50): error: expression must have class type
+
+2 errors detected in the compilation of "/tmp/tmpxft_00005481_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+02:01:36 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+02:02:25 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+02:02:25 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+02:02:26 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+02:02:27 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+02:02:47 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+02:02:47 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+02:07:04 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(9): error: identifier "GlobalLockTable" is undefined
+
+../src/STM.cuh(10): error: WriteEntry is not a template
+
+2 errors detected in the compilation of "/tmp/tmpxft_00005721_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+02:08:36 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+02:33:56 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(63): error: identifier "LckEntry" is undefined
+
+../src/STM.cuh(112): error: argument list for class template "GlobalLockTable" is missing
+
+../src/STM.cu(69): error: argument list for class template "GlobalLockTable" is missing
+
+../src/STM.cu(69): error: argument list for class template "GlobalLockTable" is missing
+
+../src/STM.cu(78): error: argument list for class template "GlobalLockTable" is missing
+
+5 errors detected in the compilation of "/tmp/tmpxft_000058f1_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+02:34:33 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(63): error: identifier "LckEntry" is undefined
+
+../src/STM.cuh(112): error: argument list for class template "GlobalLockTable" is missing
+
+../src/STM.cu(69): error: argument list for class template "GlobalLockTable" is missing
+
+../src/STM.cu(69): error: argument list for class template "GlobalLockTable" is missing
+
+4 errors detected in the compilation of "/tmp/tmpxft_0000594d_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+02:34:40 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(63): error: identifier "LckEntry" is undefined
+
+../src/STM.cu(69): error: argument list for class template "GlobalLockTable" is missing
+
+../src/STM.cu(69): error: argument list for class template "GlobalLockTable" is missing
+
+3 errors detected in the compilation of "/tmp/tmpxft_0000599b_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+02:36:39 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+02:37:22 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+02:37:54 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu: In function ‘int hey2()’:
+../src/STM.cu:35:31: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)ptr);
+                               ^
+../src/STM.cu:36:32: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", (uintptr_t)(ptr2));
+                                ^
+../src/STM.cu:37:53: warning: format ‘%u’ expects argument of type ‘unsigned int’, but argument 2 has type ‘uintptr_t {aka long unsigned int}’ [-Wformat=]
+  printf("%u.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+                                                     ^
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+02:38:25 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+02:38:26 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+02:39:47 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+02:39:47 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+02:42:30 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+02:42:39 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+02:42:39 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+19:25:20 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+../src/structures/CUDAStructures.cuh(62): error: identifier "null" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_00000bf6_00000000-5_CUDAStructures.cpp4.ii".
+src/structures/subdir.mk:18: ошибка выполнения рецепта для цели «src/structures/CUDAStructures.o»
+make: *** [src/structures/CUDAStructures.o] Ошибка 2
+19:25:52 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(35): error: GlobalLockTable is not a template
+
+../src/STM.cuh(42): error: GlobalLockTable is not a template
+
+2 errors detected in the compilation of "/tmp/tmpxft_00000c81_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+19:27:10 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(106): error: identifier "iFound" is undefined
+
+../src/STM.cuh(112): error: argument list for class template "ReadEntry" is missing
+
+2 errors detected in the compilation of "/tmp/tmpxft_00000cdd_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+19:27:24 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(112): error: argument list for class template "ReadEntry" is missing
+
+1 error detected in the compilation of "/tmp/tmpxft_00000d36_00000000-5_STM.cpp4.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+19:27:39 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+19:32:42 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+20:01:50 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(80): error: identifier "LockEntry" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_00000faa_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+20:02:08 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(98): warning: no operator "=" matches these operands
+
+../src/STM.cuh(153): error: identifier "tmpReadEntry" is undefined
+
+../src/STM.cuh(156): error: expected a member name
+
+../src/STM.cuh(156): error: expected a ";"
+
+../src/STM.cuh(176): error: no suitable user-defined conversion from "CUDALinkedList<LocalGlobalLockEntry>" to "CUDALinkedList<GlobalLockEntry>" exists
+
+4 errors detected in the compilation of "/tmp/tmpxft_00000ffe_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:02:51 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(174): error: identifier "LocalLockEntry" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_00001066_00000000-7_STM.cpp1.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:04:11 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(98): error: identifier "LockEntry" is undefined
+
+../src/STM.cuh(155): error: identifier "tmpLocalLockEntry" is undefined
+
+../src/STM.cuh(156): error: expected a member name
+
+../src/STM.cuh(156): error: expected a ";"
+
+../src/STM.cuh(154): warning: variable "tmpGlobalLockEntry" was declared but never referenced
+
+4 errors detected in the compilation of "/tmp/tmpxft_000010ce_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:06:48 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+20:07:48 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(158): error: identifier "tmpLocalloclEntry" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_000011e7_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:08:03 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(158): error: identifier "tmpLocalLocklEntry" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_0000123c_00000000-5_STM.cpp4.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+20:08:09 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+20:15:25 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(66): error: no suitable constructor exists to convert from "GlobalLockEntry *" to "GlobalLockEntry"
+
+1 error detected in the compilation of "/tmp/tmpxft_00001338_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:15:38 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+19:24:31 **** Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(121): warning: variable "preLockVal" was declared but never referenced
+
+../src/STM.cuh(122): warning: variable "finalLockVal" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+20:46:44 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(146): error: identifier "tmp" is undefined
+
+../src/STM.cuh(154): error: expected an expression
+
+../src/STM.cuh(141): warning: variable "finalLockVal" was declared but never referenced
+
+2 errors detected in the compilation of "/tmp/tmpxft_00006a1d_00000000-5_STM.cpp4.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+20:47:01 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(154): error: expected an expression
+
+../src/STM.cuh(141): warning: variable "finalLockVal" was declared but never referenced
+
+1 error detected in the compilation of "/tmp/tmpxft_00006a72_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:47:44 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(141): warning: variable "finalLockVal" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+20:47:55 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+20:51:37 **** Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+20:56:25 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(145): error: expected an expression
+
+../src/STM.cuh(146): error: expected a ";"
+
+2 errors detected in the compilation of "/tmp/tmpxft_00006d47_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:56:35 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(146): error: expected a ";"
+
+1 error detected in the compilation of "/tmp/tmpxft_00006d9d_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:56:54 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(145): error: expected an expression
+
+1 error detected in the compilation of "/tmp/tmpxft_00006df4_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+20:57:01 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(146): warning: statement is unreachable
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+21:21:50 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+21:22:09 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+21:38:03 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+22:16:17 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(290): error: nonstandard form for taking the address of a member function
+
+../src/STM.cuh(317): error: identifier "_threadfence" is undefined
+
+2 errors detected in the compilation of "/tmp/tmpxft_00007457_00000000-5_STM.cpp4.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+22:16:35 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cuh(317): error: identifier "_threadfence" is undefined
+
+1 error detected in the compilation of "/tmp/tmpxft_000074b0_00000000-5_STM.cpp4.ii".
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+make: *** [src/STM.o] Ошибка 2
+22:17:45 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 

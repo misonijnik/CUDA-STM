@@ -1,6 +1,16 @@
-04:10:32 **** Incremental Build of configuration Debug for project TestSTM ****
+02:42:39 **** Incremental Build of configuration Debug for project TestSTM ****
 make all 
-make: Цель «all» не требует выполнения команд.
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
 
-04:10:32 Build Finished (took 103ms)
+02:42:40 Build Finished (took 878ms)
 
