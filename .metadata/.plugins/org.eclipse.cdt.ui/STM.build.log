@@ -1,17 +1,6 @@
-22:17:45 **** Incremental Build of configuration Debug for project STM ****
+03:01:28 **** Incremental Build of configuration Debug for project STM ****
 make all 
-Building file: ../src/STM.cu
-Invoking: NVCC Compiler
-/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
-/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
-Finished building: ../src/STM.cu
- 
-Building target: libSTM.a
-Invoking: NVCC Archiver
-nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
-nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
-Finished building target: libSTM.a
- 
+make: Цель «all» не требует выполнения команд.
 
-22:17:46 Build Finished (took 883ms)
+03:01:28 Build Finished (took 89ms)
 

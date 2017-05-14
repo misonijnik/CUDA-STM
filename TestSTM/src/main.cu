@@ -5,6 +5,7 @@ int main(void)
 {
 	//hey2();
 	//hey();
-	testGlt();
+	//testGlt();
+	hey3();
 	return 0;
 }
