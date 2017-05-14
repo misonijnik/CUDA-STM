@@ -1612,3 +1612,727 @@ Invoking: NVCC Linker
 /usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
 Finished building target: TestSTM
  
+13:26:24 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+13:26:35 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:26:35 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+13:26:42 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:26:42 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:27:26 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+13:27:32 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:27:32 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+13:27:35 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:27:35 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:55:42 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+13:55:46 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:55:54 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:55:54 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+13:57:07 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+13:57:20 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:57:20 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+13:58:05 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+13:58:12 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+13:58:12 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:02:28 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cuh(371): error: expression must have class type
+
+1 error detected in the compilation of "/tmp/tmpxft_00000c04_00000000-7_STM.cpp1.ii".
+make: *** [src/STM.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/STM.o»
+17:02:30 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+/home/alexander/GitHib/CUDA-STM/STM/src/STM.cuh(371): error: expression must have class type
+
+1 error detected in the compilation of "/tmp/tmpxft_00000c20_00000000-5_main.cpp4.ii".
+make: *** [src/main.o] Ошибка 2
+src/subdir.mk:18: ошибка выполнения рецепта для цели «src/main.o»
+17:04:29 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:06:23 **** Clean-only build of configuration Debug for project STM ****
+make clean 
+rm -rf  ./src/structures/CUDAStructures.o  ./src/STM.o  ./src/structures/CUDAStructures.d  ./src/STM.d  libSTM.a
+ 
+17:06:23 **** Clean-only build of configuration Debug for project TestSTM ****
+make clean 
+rm -rf  ./src/main.o  ./src/main.d  TestSTM
+ 
+17:06:32 **** Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/structures/CUDAStructures.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src/structures" -M -o "src/structures/CUDAStructures.d" "../src/structures/CUDAStructures.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/structures/CUDAStructures.o" "../src/structures/CUDAStructures.cu"
+Finished building: ../src/structures/CUDAStructures.cu
+ 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:06:34 **** Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:07:06 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:07:06 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:10:32 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:10:33 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:10:34 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:10:34 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:13:09 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:13:10 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:14:06 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:14:07 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:14:13 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:14:13 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:31:00 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:31:01 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:32:14 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:32:23 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:32:23 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:32:57 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:33:00 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:33:00 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:33:20 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:33:23 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:33:23 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:33:35 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:33:35 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:33:44 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:33:45 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:34:15 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+../src/STM.cu(111): warning: variable "count" was declared but never referenced
+
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:34:19 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:34:19 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:35:09 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:35:12 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:35:12 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:35:33 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:35:36 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:35:36 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:35:41 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:35:41 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:36:08 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:36:08 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:38:06 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:38:09 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:38:09 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:38:16 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:38:16 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:38:22 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:38:22 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:38:27 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:38:27 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:40:19 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:40:21 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:40:21 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:40:31 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:40:31 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:40:41 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:40:41 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:40:54 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:40:54 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:41:03 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:41:03 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:42:09 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:42:12 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:42:12 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building file: ../src/main.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/main.d" "../src/main.cu"
+/usr/local/cuda-8.0/bin/nvcc -I"/home/alexander/GitHib/CUDA-STM/STM" -G -g -O0 -Xptxas -dlcm=cg --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/main.o" "../src/main.cu"
+Finished building: ../src/main.cu
+ 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 
+17:42:17 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:42:17 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:42:33 **** Incremental Build of configuration Debug for project STM ****
+make all 
+Building file: ../src/STM.cu
+Invoking: NVCC Compiler
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 -gencode arch=compute_30,code=sm_30  -odir "src" -M -o "src/STM.d" "../src/STM.cu"
+/usr/local/cuda-8.0/bin/nvcc -G -g -O0 --compile --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30  -x cu -o  "src/STM.o" "../src/STM.cu"
+Finished building: ../src/STM.cu
+ 
+Building target: libSTM.a
+Invoking: NVCC Archiver
+nvcc  -lib -o  "libSTM.a"  ./src/structures/CUDAStructures.o  ./src/STM.o   
+nvcc warning : The 'compute_20', 'sm_20', and 'sm_21' architectures are deprecated, and may be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+Finished building target: libSTM.a
+ 
+17:42:37 **** Incremental Build of configuration Debug for project STM ****
+make all 
+make: Цель «all» не требует выполнения команд.
+17:42:37 **** Incremental Build of configuration Debug for project TestSTM ****
+make all 
+Building target: TestSTM
+Invoking: NVCC Linker
+/usr/local/cuda-8.0/bin/nvcc --cudart static -L"/home/alexander/GitHib/CUDA-STM/STM/Debug" --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "TestSTM"  ./src/main.o   -lSTM
+Finished building target: TestSTM
+ 

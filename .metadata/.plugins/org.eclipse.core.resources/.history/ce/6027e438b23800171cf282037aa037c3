@@ -33,7 +33,7 @@ __host__ int hey3()
 	val[1] = 0;
 	cudaMemcpy(ptr, val, sizeof(int)*2, cudaMemcpyHostToDevice);
 	GlobalLockTable<int> g_lock = GlobalLockTable<int>(ptr, 2, 1);
-	testCorrectSTM<<<600,1>>>(g_lock, ptr);//todo fix error with more block
+	testCorrectSTM<<<100,5>>>(g_lock, ptr);//todo fix error with more block
 	cudaMemcpy(val, ptr, sizeof(int)*2, cudaMemcpyDeviceToHost);
 	printf("%d.\n", (val[0]));
 	printf("%d.\n", (val[1]));
@@ -110,10 +110,10 @@ __global__ void testCorrectSTM(GlobalLockTable<int> g_lock, int* cudaPtr)
 	size_t length = g_lock.getLength();
 	size_t count = blockDim.x*gridDim.x;
 	unsigned int tmp = 0;
-	if (uniqueIndex() + 1 > count/2)
+	/*if (uniqueIndex() + 1 > count/2)
 	{
 		tmp++;
-	}
+	}*/
 	int val = 0;
 	do
 	{

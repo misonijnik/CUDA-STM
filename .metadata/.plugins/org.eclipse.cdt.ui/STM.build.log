@@ -1,6 +1,6 @@
-03:01:28 **** Incremental Build of configuration Debug for project STM ****
+17:42:37 **** Incremental Build of configuration Debug for project STM ****
 make all 
 make: Цель «all» не требует выполнения команд.
 
-03:01:28 Build Finished (took 89ms)
+17:42:37 Build Finished (took 81ms)
 

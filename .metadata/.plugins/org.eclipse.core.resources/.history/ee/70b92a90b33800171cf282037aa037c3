@@ -33,7 +33,7 @@ __host__ int hey3()
 	val[1] = 0;
 	cudaMemcpy(ptr, val, sizeof(int)*2, cudaMemcpyHostToDevice);
 	GlobalLockTable<int> g_lock = GlobalLockTable<int>(ptr, 2, 1);
-	testCorrectSTM<<<600,1>>>(g_lock, ptr);//todo fix error with more block
+	testCorrectSTM<<<400,1>>>(g_lock, ptr);//todo fix error with more block
 	cudaMemcpy(val, ptr, sizeof(int)*2, cudaMemcpyDeviceToHost);
 	printf("%d.\n", (val[0]));
 	printf("%d.\n", (val[1]));

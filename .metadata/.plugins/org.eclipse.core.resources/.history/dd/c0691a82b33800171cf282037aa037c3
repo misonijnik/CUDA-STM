@@ -320,7 +320,7 @@ public:
 		Node<WriteEntry<T> >* tmpNode = writeSet.getHead();
 		while(tmpNode != NULL)
 		{
-			//printf("thread %u, value1 %d, value2 %d\n", uniqueIndex(),*(tmpNode->value.cudaPtr), tmpNode->value.value);
+			printf("thread %u, value1 %d, value2 %d\n", uniqueIndex(),*(tmpNode->value.cudaPtr), tmpNode->value.value);
 			*(tmpNode->value.cudaPtr) = tmpNode->value.value;
 			tmpNode = tmpNode->next;
 		}
@@ -336,7 +336,7 @@ public:
 			{
 				(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version = 0;
 			}
-			//printf("thread %u, version %u\n", uniqueIndex(),(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version);
+			printf("thread %u, version %u\n", uniqueIndex(),(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version);
 			tmpLockNode = tmpLockNode->next;
 		}
 		//printf("thread %u\n", uniqueIndex());

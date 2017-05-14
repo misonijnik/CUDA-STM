@@ -302,7 +302,6 @@ public:
 			{
 				if(g_lock->getEntryAt(tmpNode->value.cudaPtr).entry.version != tmpNode->value.version)
 				{
-					releaseLocks();
 					return false;
 				}
 				tmpNode = tmpNode->next;
@@ -357,7 +356,7 @@ public:
 			if(tmpLock.entry.pre_locked == 1)
 			{
 				preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
-				atomicCAS((int*)g_lock->getEntryAtPtr(tmpNode->value.index), \
+				unsigned int tmp = atomicCAS((int*)g_lock->getEntryAtPtr(tmpNode->value.index), \
 						preLockVal.i, unLockVal.i);
 			}
 			tmpNode = tmpNode->next;

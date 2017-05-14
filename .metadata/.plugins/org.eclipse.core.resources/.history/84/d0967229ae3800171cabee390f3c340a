@@ -302,7 +302,6 @@ public:
 			{
 				if(g_lock->getEntryAt(tmpNode->value.cudaPtr).entry.version != tmpNode->value.version)
 				{
-					releaseLocks();
 					return false;
 				}
 				tmpNode = tmpNode->next;
@@ -320,7 +319,7 @@ public:
 		Node<WriteEntry<T> >* tmpNode = writeSet.getHead();
 		while(tmpNode != NULL)
 		{
-			//printf("thread %u, value1 %d, value2 %d\n", uniqueIndex(),*(tmpNode->value.cudaPtr), tmpNode->value.value);
+			printf("thread %u, value1 %d, value2 %d\n", uniqueIndex(),*(tmpNode->value.cudaPtr), tmpNode->value.value);
 			*(tmpNode->value.cudaPtr) = tmpNode->value.value;
 			tmpNode = tmpNode->next;
 		}
@@ -336,7 +335,7 @@ public:
 			{
 				(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version = 0;
 			}
-			//printf("thread %u, version %u\n", uniqueIndex(),(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version);
+			printf("thread %u, version %u\n", uniqueIndex(),(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version);
 			tmpLockNode = tmpLockNode->next;
 		}
 		//printf("thread %u\n", uniqueIndex());
@@ -357,7 +356,7 @@ public:
 			if(tmpLock.entry.pre_locked == 1)
 			{
 				preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
-				atomicCAS((int*)g_lock->getEntryAtPtr(tmpNode->value.index), \
+				unsigned int tmp = atomicCAS((int*)g_lock->getEntryAtPtr(tmpNode->value.index), \
 						preLockVal.i, unLockVal.i);
 			}
 			tmpNode = tmpNode->next;
@@ -369,7 +368,7 @@ public:
 		{
 			tmpLock = g_lock->getEntryAt(tmpNode->value.index);
 			unLockVal = calcUnlockVal(tmpLock.entry.version);
-			if(tmpNode->value.locked == 1)
+			if(tmpNode.locked == 1)
 			{
 				*(g_lock->getEntryAtPtr(tmpNode->value.index)) = unLockVal;
 			}

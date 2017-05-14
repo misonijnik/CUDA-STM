@@ -302,7 +302,6 @@ public:
 			{
 				if(g_lock->getEntryAt(tmpNode->value.cudaPtr).entry.version != tmpNode->value.version)
 				{
-					releaseLocks();
 					return false;
 				}
 				tmpNode = tmpNode->next;
