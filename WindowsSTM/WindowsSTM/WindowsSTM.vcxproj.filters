@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CudaCompile Include="CUDAStructures.cu" />
+    <CudaCompile Include="main.cu" />
+    <CudaCompile Include="STM.cu" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CUDAStructures.cuh" />
+    <ClInclude Include="helper.cuh" />
+    <ClInclude Include="STM.cuh" />
+  </ItemGroup>
+</Project>
