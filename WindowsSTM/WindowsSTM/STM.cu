@@ -29,24 +29,24 @@ __host__ int hey3()
 	//cudaDeviceSetLimit(cudaLimitMallocHeapSize, size * 2);
 	printf("%u.\n", size);
 	int* ptr;
-	cudaMalloc((void**)&ptr, sizeof(int)*100);
+	cudaMalloc((void**)&ptr, sizeof(int)*1000);
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	int* val = (int*)malloc(sizeof(int)*100);
+	int* val = (int*)malloc(sizeof(int)*1000);
 	cudaCheckError();
 	val[0] = 0;
 	val[1] = 0;
 	//cudaMemcpy(ptr, val, sizeof(int)*100, cudaMemcpyHostToDevice);
-	cudaMemset(ptr, 0, sizeof(int) * 100);
+	cudaMemset(ptr, 0, sizeof(int) * 1000);
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	GlobalLockTable<int> g_lock = GlobalLockTable<int>(ptr, 100, 1);
+	GlobalLockTable<int> g_lock = GlobalLockTable<int>(ptr, 1000, 1);
 	cudaCheckError();
-	testCorrectSTM<<<200,10>>>(g_lock, ptr);//todo fix error with more block
+	testCorrectSTM<<<20000,1024>>>(g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	g_lock.Dispose();
-	cudaMemcpy(val, ptr, sizeof(int)*100, cudaMemcpyDeviceToHost);
+	cudaMemcpy(val, ptr, sizeof(int)*1000, cudaMemcpyDeviceToHost);
 	printf("%d.\n", (val[0]));
 	printf("%d.\n", (val[1]));
 	free(val);
@@ -127,7 +127,7 @@ __global__ void testCorrectSTM(GlobalLockTable<int> g_lock, int* cudaPtr)
 	unsigned int tmpOne = 0;
 	unsigned int tmpTwo = 0;
 	unsigned int tmp = uniqueIndex();
-	tmp = tmp % 100;
+	tmp = tmp % 1000;
 	/*if (uniqueIndex() + 1 > count/2)
 	{
 		tmpOne++;

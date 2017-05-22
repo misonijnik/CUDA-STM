@@ -5,6 +5,8 @@
 #ifndef CUDAHELPER
 #define CUDAHELPER
 
+#define uniqueIndex() blockIdx.x* blockDim.x + threadIdx.x
+
 #define cudaCheckError() {\
 	cudaError_t e = cudaGetLastError(); \
 	if (e != cudaSuccess) {\
@@ -12,31 +14,31 @@
 		getchar();\
 		exit(0); }}
 
-/*template<typename T>
+template<typename T>
 class CUDASet
 {
 private:
 	size_t realCount;
+	size_t Count;
+	T cudaPtr[100];
+
 	void __device__ upsize()
 	{
-		T* tmpPtr = malloc(2*realCount*sizeof(T));
+		T* tmpPtr = (T*)malloc(2*realCount*sizeof(T));
 		memcpy(tmpPtr, cudaPtr, sizeof(T)*(realCount));
 		realCount *= 2;
 		free(cudaPtr);
 		cudaPtr = tmpPtr;
-	}
+	}	
 
-public:
-	T* cudaPtr;
-	size_t Count;
+public:	
+	
 
-	__host__ CUDASet()
+	__device__ CUDASet()
 	{
 		Count = 0;
-		realCount = 4;
-		cudaError_t error = cudaMalloc((void**)&cudaPtr, realCount*sizeof(T));
-		error = cudaDeviceSynchronize();
-		error = cudaGetLastError();
+		realCount = 10;
+		//cudaPtr = (T*)malloc(realCount * sizeof(T));
 	}
 
 	__host__ __device__ CUDASet(const CUDASet& set)
@@ -46,17 +48,43 @@ public:
 		realCount = set.realCount;
 	}
 
-	__host__ CUDASet(T* cpuPtr, unsigned int count)
+	__device__ size_t getCount()
 	{
-		Count = count;
-		realCount = Count;
-		cudaError_t error = cudaMalloc((void**)&cudaPtr, realCount*sizeof(T));
-		error = cudaDeviceSynchronize();
-		cudaMemcpy(cudaPtr, cpuPtr, sizeof(T)*(Count), cudaMemcpyHostToDevice);
-		error = cudaDeviceSynchronize();
-		error = cudaGetLastError();
+		return Count;
 	}
-};*/
+
+	__device__ void Add(T value)
+	{
+		if (Count == realCount)
+		{
+			//upsize();
+			printf("size error, thread %u", uniqueIndex());
+		}
+
+		cudaPtr[Count] = value;
+		++Count;
+	}
+
+	__device__ T* getByIndex(unsigned int index)
+	{
+		if (index >= Count)
+		{
+			printf("out of range error, thread %u", uniqueIndex());
+			return NULL;
+		}
+		return (cudaPtr + index);
+	}
+
+	__device__ void Clear()
+	{
+		Count = 0;
+	}
+
+	__device__ void Dispose()
+	{
+		free(cudaPtr);
+	}
+};
 
 template<typename T>
 class CUDAArray
@@ -145,7 +173,5 @@ template class CUDAArray<int>;
 template class CUDAArray<float>;
 
 #endif
-
-#define uniqueIndex() blockIdx.x* blockDim.x + threadIdx.x
 
 

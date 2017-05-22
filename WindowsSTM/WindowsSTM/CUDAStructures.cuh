@@ -10,7 +10,6 @@ struct Node
 {
     V value;
     struct Node<V>* next;
-    struct Node<V>* prev;
 };
 
 template<typename T>
@@ -43,35 +42,8 @@ public:
 		Node<T>* tmp = (Node<T>*)malloc(sizeof(Node<T>));
 		tmp->value = val;
 		tmp->next = head;
-		tmp->prev = NULL;
-		if(Count > 0)
-		{
-			head->prev = tmp;
-		}
 		head = tmp;
 		++Count;
-	}
-
-	__device__ void deleteValue(Node<T>* node)
-	{
-		if(Count > 0)
-		{
-			if (node == NULL)
-			{
-				return;
-			}
-			if (node->prev != NULL)
-			{
-				node->prev->next = node->next;
-			}
-			if (node->next != NULL)
-			{
-				node->next->prev = node->prev;
-			}
-
-			free(node);
-			--Count;
-		}
 	}
 
 	__device__ void Dispose()
@@ -94,5 +66,7 @@ public:
 	{
 	}
 };
+
+
 
 #endif
