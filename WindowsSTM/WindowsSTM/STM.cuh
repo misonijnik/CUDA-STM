@@ -45,8 +45,8 @@ struct WriteEntry
 
 typedef	struct
 {
-	size_t memSize;
-	size_t wordSize;
+	unsigned int memSize;
+	unsigned int wordSize;
 }GlobalLockTableInfo;
 
 class GlobalLockTable
@@ -54,7 +54,7 @@ class GlobalLockTable
 private:
 	CUDAArray<GlobalLockEntry> _glt;
 	void* _sharedMemPtr;
-	CUDAArray<GlobalLockTableInfo> _info;
+	CUDAArray<uint2> _info; // x - memSize, y - wordSize
 	unsigned int _lengthInfo;
 	size_t _length;
 
@@ -77,15 +77,17 @@ public:
 		_glt = table._glt;
 	}*/
 
-	__host__ GlobalLockTable(void* sharedMemPtr, GlobalLockTableInfo info[], unsigned int lengthInfo)
+	__host__ GlobalLockTable(void* sharedMemPtr, uint2* info, unsigned int lengthInfo)
 	{
 		_sharedMemPtr = sharedMemPtr;
-		_info = CUDAArray<GlobalLockTableInfo>(info, lengthInfo);
+		_info = CUDAArray<uint2>(info, lengthInfo);
+
 		_lengthInfo = lengthInfo;
+		printf("%u, %u \n", info[0].x, info[0].y);
 		_length = 0;
 		for (size_t i = 0; i < lengthInfo; i++)
 		{
-			_length += info[i].memSize / info[i].wordSize;
+			_length += info[i].x / info[i].y;
 		}
 		_glt = CUDAArray<GlobalLockEntry>(_length);
 	}
@@ -128,23 +130,24 @@ public:
 	__device__ unsigned long hash(void* cudaPtr)
 	{
 		//TODO control range
-		uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
+		/*uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
 		size_t tableIndex = 0;
 		for (size_t i = 0; i < _lengthInfo; i++)
 		{
-			if (tmpIndex >= _info.At(i).memSize)
+			if (tmpIndex >= _info.At(i).x)
 			{
-				tableIndex += _info.At(i).memSize / _info.At(i).wordSize;
-				tmpIndex -= _info.At(i).memSize;
+				tableIndex += _info.At(i).x / _info.At(i).y;
+				tmpIndex -= _info.At(i).x;
 			}
 			else
 			{
-				tableIndex += tmpIndex / _info.At(i).wordSize;
+				tableIndex += tmpIndex / _info.At(i).y;
 				return tableIndex;
 			}
 		}		
-		printf("ERROR\n");
-		return 0;
+		printf("ERROR\n");*/
+		//printf("%u, %u \n", _info.At(0).x, _info.At(0).y);
+		return (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr))) / _info.At(0).y;
 	}
 
 	__host__ void Dispose()
@@ -289,7 +292,8 @@ public:
 			{
 				ReadEntry<T> tmpReadEntry;
 				tmpReadEntry.cudaPtr = ptr;
-				tmpReadEntry.value = *ptr;
+				//tmpReadEntry.value = *ptr;
+				memcpy(&tmpReadEntry.value, ptr, sizeof(T));
 				tmpReadEntry.version = g_lock->getEntryAt<T>(ptr).entry.version;
 				readSet.Add(tmpReadEntry);
 				val = tmpReadEntry.value;
@@ -361,9 +365,9 @@ public:
 		unsigned int length = writeSet.getCount();
 		for (size_t i = 0; i < length; i++)
 		{
-			*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
+			//*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
 
-			//memcpy(writeSet.getByIndex(i)->cudaPtr, &(writeSet.getByIndex(i)->value), sizeof(T));
+			memcpy(writeSet.getByIndex(i)->cudaPtr, &(writeSet.getByIndex(i)->value), sizeof(T));
 
 			/*WriteEntry<T> tmp;
 			writeSet.getByIndex(i, &tmp);

@@ -112,10 +112,9 @@ public:
 	__host__ CUDAArray(T* cpuPtr, unsigned int length)
 	{
 		Length = length;
-		cudaError_t error = cudaMalloc((void**)&cudaPtr, length*sizeof(T));
-		error = cudaDeviceSynchronize();
-		error = cudaMemcpy(cudaPtr, cpuPtr, length*sizeof(T), cudaMemcpyHostToDevice);
-		error = cudaDeviceSynchronize();
+		cudaMalloc((void**)&cudaPtr, length*sizeof(T));
+		cudaMemcpy(cudaPtr, cpuPtr, length*sizeof(T), cudaMemcpyHostToDevice);
+		cudaDeviceSynchronize();
 	}
 
 	__host__ CUDAArray(int length)

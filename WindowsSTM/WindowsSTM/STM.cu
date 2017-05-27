@@ -40,12 +40,11 @@ __host__ int hey3()
 	cudaMemset(ptr, 0, sizeof(double) * 100);
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	GlobalLockTableInfo info[1];
-	info[0].memSize = sizeof(double) * 100;
-	info[0].wordSize = sizeof(double);
+	uint2 info[1];
+	info[0] = make_uint2(sizeof(double) * 100, sizeof(double));
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	cudaCheckError();
-	testCorrectSTM<<<100,1024>>>(g_lock, ptr);//todo fix error with more block
+	testCorrectSTM<<<1000,1024>>>(g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	g_lock.Dispose();
@@ -102,9 +101,9 @@ __host__ int testGlt()
 	cudaCheckError();
 	int* value;
 	cudaMalloc((void**)&value, sizeof(int));
-	GlobalLockTableInfo info[1];
-	info[0].memSize = sizeof(int) * 4;
-	info[0].memSize = sizeof(int);
+	uint2 info[1];
+	info[0].x = sizeof(int) * 4;
+	info[0].y = sizeof(int);
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	testGltKernel<<<1,1>>>(g_lock, ptr, value);
 	int* val = (int*)malloc(sizeof(int));
