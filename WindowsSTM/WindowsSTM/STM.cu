@@ -47,7 +47,7 @@ __host__ int hey3()
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	cudaCheckError();
 
-	testCorrectSTM << <2000, 1024 >> > (g_lock, ptr);//todo fix error with more block
+	testCorrectSTM << <100, 32 >> > (g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
 	cudaCheckError();
 

@@ -5,7 +5,7 @@
 
 #define MAX_VERSION 2047
 
-typedef	struct
+typedef	struct __align__(4)
 {
 	unsigned version : 11;
 	unsigned owner : 19;
@@ -16,12 +16,12 @@ typedef	struct
 typedef union
 {
 	gle entry;
-	int i;
+	unsigned int i;
 }GlobalLockEntry;
 
 
 
-typedef	struct
+typedef	struct __align__(4)
 {
 	unsigned version : 11;
 	unsigned index : 20;
@@ -130,7 +130,7 @@ public:
 	__device__ unsigned long hash(void* cudaPtr)
 	{
 		//TODO control range
-		/*uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
+		uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
 		size_t tableIndex = 0;
 		for (size_t i = 0; i < _lengthInfo; i++)
 		{
@@ -142,12 +142,20 @@ public:
 			else
 			{
 				tableIndex += tmpIndex / _info.At(i).y;
+				//break;
 				return tableIndex;
 			}
-		}		
-		printf("ERROR\n");*/
+		}
+		printf("ERROR");
+		/*if (uniqueIndex() == 105)
+		{
+			printf("%lu one thread %lu\n", tableIndex, uniqueIndex());
+			printf("%lu two thread %lu\n", (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr))) / _info.At(0).y, uniqueIndex());
+		}*/
+		
 		//printf("%u, %u \n", _info.At(0).x, _info.At(0).y);
-		return (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr))) / _info.At(0).y;
+		//return (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr))) / _info.At(0).y;
+		return 0;
 	}
 
 	__host__ void Dispose()
@@ -213,7 +221,11 @@ private:
 			do
 			{
 				tmpLock = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
-				//printf("thread %u: %u %u, %u\n", uniqueIndex(), tmpLock.entry.version, tmpNode->value.version, tmpLock.entry.owner);
+				/*if (lockSet.getByIndex(i)->index == 25)
+				{
+					printf("thread %u: %u %u, %u\n", uniqueIndex(), tmpLock.entry.version, lockSet.getByIndex(i)->version, tmpLock.entry.owner);
+				}*/
+				
 				if (tmpLock.entry.version != lockSet.getByIndex(i)->version || \
 					tmpLock.entry.locked == 1 || \
 					(tmpLock.entry.pre_locked == 1 && tmpLock.entry.owner < uniqueIndex()))
@@ -222,9 +234,17 @@ private:
 					return false;
 				}
 				preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
-			} while (atomicCAS((int*)g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index), \
+			} while (atomicCAS(&(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)->i), \
 				tmpLock.i, preLockVal.i) != tmpLock.i);
 		}
+		/*for (size_t i = 0; i < lockSet.getCount(); i++)
+		{
+			if (lockSet.getByIndex(i)->index == 0)
+			{
+				GlobalLockEntry tmp = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
+				printf("thread %u: locked %u  owner %u version %u\n", uniqueIndex(), tmp.entry.pre_locked, tmp.entry.owner, tmp.entry.version);
+			}
+		}*/
 		return true;
 	}
 
@@ -240,7 +260,7 @@ private:
 			tmpLock = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
 			preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
 			finalLockVal = calcLockedVal(tmpLock.entry.version);
-			if (atomicCAS((int*)(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)), \
+			if (atomicCAS(&(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)->i), \
 				preLockVal.i, finalLockVal.i) != preLockVal.i)
 			{
 				releaseLocks();
@@ -248,6 +268,14 @@ private:
 			}
 			lockSet.getByIndex(i)->locked = 1;
 		}
+		/*for (size_t i = 0; i < lockSet.getCount(); i++)
+		{
+			if (lockSet.getByIndex(i)->index == 0)
+			{
+				GlobalLockEntry tmp = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
+				printf("thread %u: locked %u  owner %u version %u\n", uniqueIndex(), tmp.entry.locked, tmp.entry.owner, tmp.entry.version);
+			}
+		}*/
 		return true;
 	}
 
@@ -363,8 +391,16 @@ public:
 	__device__ void txCommit()
 	{
 		unsigned int length = writeSet.getCount();
+		for (size_t i = 0; i < lockSet.getCount(); i++)
+		{
+			/*if (lockSet.getByIndex(i)->index == 0)
+			{
+				printf("thread %u: %f %f, %f\n", uniqueIndex(), readSet.getByIndex(i)->value, *(writeSet.getByIndex(i)->cudaPtr), writeSet.getByIndex(i)->value);
+			}*/
+		}
 		for (size_t i = 0; i < length; i++)
 		{
+			
 			*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
 
 			//memcpy(writeSet.getByIndex(i)->cudaPtr, &(writeSet.getByIndex(i)->value), sizeof(T));
