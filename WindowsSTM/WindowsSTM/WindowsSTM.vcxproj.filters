@@ -9,5 +9,6 @@
     <ClInclude Include="CUDAStructures.cuh" />
     <ClInclude Include="helper.cuh" />
     <ClInclude Include="STM.cuh" />
+    <ClInclude Include="ConcurrentLinkedList.cuh" />
   </ItemGroup>
 </Project>

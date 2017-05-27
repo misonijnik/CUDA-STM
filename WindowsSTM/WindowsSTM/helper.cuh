@@ -75,6 +75,17 @@ public:
 		return (cudaPtr + index);
 	}
 
+	//
+	__device__ void getByIndex(unsigned int index, T* valuePtr)
+	{
+		if (index >= Count)
+		{
+			printf("out of range error, thread %u", uniqueIndex());
+		}
+		memcpy(valuePtr, cudaPtr + index, sizeof(T));
+	}
+	//
+
 	__device__ void Clear()
 	{
 		Count = 0;
@@ -83,6 +94,10 @@ public:
 	__device__ void Dispose()
 	{
 		free(cudaPtr);
+	}
+
+	__device__  ~CUDASet()
+	{
 	}
 };
 

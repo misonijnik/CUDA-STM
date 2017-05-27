@@ -43,12 +43,12 @@ struct WriteEntry
 	T value;
 };
 
-template<typename T>
+
 class GlobalLockTable
 {
 private:
 	CUDAArray<GlobalLockEntry> _glt;
-	T* _sharedMemPtr;
+	void* _sharedMemPtr;
 	size_t _memSize;
 	size_t _wordSize;
 	size_t _numberWordLock;
@@ -73,10 +73,10 @@ public:
 		_glt = table._glt;
 	}*/
 
-	__host__ GlobalLockTable(T* sharedMemPtr, size_t memSize, size_t numberWordLock)
+	__host__ GlobalLockTable(void* sharedMemPtr, size_t wordSize, size_t memSize, size_t numberWordLock)
 	{
 		_sharedMemPtr = sharedMemPtr;
-		_wordSize = sizeof(T);
+		_wordSize = wordSize;
 		_memSize = memSize*_wordSize;
 		_numberWordLock = numberWordLock;
 		_length = memSize /_numberWordLock;
@@ -100,22 +100,25 @@ public:
 		return _glt.AtPtr(index);
 	}
 
+	template<typename T>
 	__device__ GlobalLockEntry getEntryAt(T* cudaPtr)
 	{
 		return _glt.At(hash(cudaPtr));
 	}
 
+	template<typename T>
 	__device__ GlobalLockEntry* getEntryAtPtr(T* cudaPtr)
 	{
 		return _glt.AtPtr(hash(cudaPtr));
 	}
 
+	template<typename T>
 	__device__ void setEntryAt(T* cudaPtr, GlobalLockEntry entry)
 	{
 		_glt.SetAt(hash(cudaPtr), entry);
 	}
 
-	__host__ __device__ unsigned long hash(T* cudaPtr)
+	__host__ __device__ unsigned long hash(void* cudaPtr)
 	{
 		//TODO control range
 		unsigned long tmp = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)))/(_wordSize*_numberWordLock);
@@ -139,10 +142,11 @@ template<typename T>
 class LocalMetadata
 {
 private:
-	GlobalLockTable<T>* g_lock;
+	GlobalLockTable* g_lock;
+	const unsigned int sizeBuf = 1000;
 	CUDASet<ReadEntry<T> > readSet;
 	CUDASet<WriteEntry<T> > writeSet;
-	CUDASet<LocalLockEntry> lockSet;
+	CUDASet<LocalLockEntry > lockSet;
 	bool abort;
 
 	__device__ GlobalLockEntry calcPreLockedVal(unsigned int version, unsigned int index)
@@ -230,7 +234,7 @@ public:
 		g_lock = NULL;
 	}
 
-	__device__ LocalMetadata(GlobalLockTable<T>* glt)
+	__device__ LocalMetadata(GlobalLockTable* glt)
 	{
 		abort = false;
 		g_lock = glt;
@@ -247,7 +251,7 @@ public:
 	__device__ T txRead(T* ptr)
 	{
 		T val;
-		if(g_lock->getEntryAt(ptr).entry.locked == 0)
+		if(g_lock->getEntryAt<T>(ptr).entry.locked == 0)
 		{
 			bool isFound = false;
 			unsigned int length = writeSet.getCount();
@@ -265,7 +269,7 @@ public:
 				ReadEntry<T> tmpReadEntry;
 				tmpReadEntry.cudaPtr = ptr;
 				tmpReadEntry.value = *ptr;
-				tmpReadEntry.version = g_lock->getEntryAt(ptr).entry.version;
+				tmpReadEntry.version = g_lock->getEntryAt<T>(ptr).entry.version;
 				readSet.Add(tmpReadEntry);
 				val = tmpReadEntry.value;
 			}
@@ -301,7 +305,7 @@ public:
 				writeSet.Add(tmpWriteEntry);
 				LocalLockEntry tmpLocalLockEntry;
 				tmpLocalLockEntry.index = g_lock->hash(ptr);
-				tmpLocalLockEntry.version = g_lock->getEntryAt(ptr).entry.version;
+				tmpLocalLockEntry.version = g_lock->getEntryAt<T>(ptr).entry.version;
 				lockSet.Add(tmpLocalLockEntry);
 			}
 		}
@@ -318,7 +322,7 @@ public:
 			unsigned int length = readSet.getCount();
 			for (size_t i = 0; i < length; i++)
 			{
-				if (g_lock->getEntryAt(readSet.getByIndex(i)->cudaPtr).entry.version != readSet.getByIndex(i)->version)
+				if (g_lock->getEntryAt<T>(readSet.getByIndex(i)->cudaPtr).entry.version != readSet.getByIndex(i)->version)
 				{
 					return false;
 				}
@@ -337,6 +341,12 @@ public:
 		for (size_t i = 0; i < length; i++)
 		{
 			*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
+
+			//memcpy(writeSet.getByIndex(i)->cudaPtr, &(writeSet.getByIndex(i)->value), sizeof(T));
+
+			/*WriteEntry<T> tmp;
+			writeSet.getByIndex(i, &tmp);
+			*(writeSet.getByIndex(i)->cudaPtr) = tmp.value;*/
 		}
 		__threadfence();
 		length = lockSet.getCount();
@@ -416,8 +426,8 @@ __host__ int hey();
 __host__ int hey2();
 __host__ int hey3();
 __host__ int testGlt();
-__global__ void testGltKernel(GlobalLockTable<int> g_lock, int* cudaPtr, int* val);
+__global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val);
 __global__ void changeArray(CUDAArray<WriteEntry<int> > arr, int* ptr, int val);
-__global__ void testCorrectSTM(GlobalLockTable<int> g_lock, int* cudaPtr);
+__global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr);
 
 #endif

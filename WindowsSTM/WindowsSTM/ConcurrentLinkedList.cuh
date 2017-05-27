@@ -1,0 +1,5 @@
+#ifndef CONCURRENTLINKEDLIST
+#define CONCURRENTLINKEDLIST
+#include "STM.cuh"
+
+#endif

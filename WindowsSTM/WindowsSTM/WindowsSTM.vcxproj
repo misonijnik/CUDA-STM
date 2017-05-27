@@ -24,6 +24,7 @@
     <CudaCompile Include="STM.cu" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConcurrentLinkedList.cuh" />
     <ClInclude Include="CUDAStructures.cuh" />
     <ClInclude Include="helper.cuh" />
     <ClInclude Include="STM.cuh" />
