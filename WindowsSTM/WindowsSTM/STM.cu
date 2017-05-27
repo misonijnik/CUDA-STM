@@ -28,29 +28,32 @@ __host__ int hey3()
 	cudaDeviceGetLimit(&size, cudaLimitMallocHeapSize);
 	//cudaDeviceSetLimit(cudaLimitMallocHeapSize, size * 2);
 	printf("%u.\n", size);
-	double* ptr;
-	cudaMalloc((void**)&ptr, sizeof(double)*100);
+	size = 100;
+	int* ptr;
+	cudaMalloc((void**)&ptr, sizeof(int)*size);
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	double* val = (double*)malloc(sizeof(double)*100);
+	int* val = (int*)malloc(sizeof(int)*size);
 	cudaCheckError();
-	val[0] = 0;
-	val[1] = 0;
+	memset(val, 0, sizeof(int)*size);
 	//cudaMemcpy(ptr, val, sizeof(int)*100, cudaMemcpyHostToDevice);
-	cudaMemset(ptr, 0, sizeof(double) * 100);
+	cudaMemset(ptr, 0, sizeof(int) * size);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	uint2 info[1];
-	info[0] = make_uint2(sizeof(double) * 100, sizeof(double));
+	info[0] = make_uint2(sizeof(int) * size, sizeof(int));
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	cudaCheckError();
-	testCorrectSTM<<<1000,1024>>>(g_lock, ptr);//todo fix error with more block
+	testCorrectSTM<<<1000,32>>>(g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	g_lock.Dispose();
-	cudaMemcpy(val, ptr, sizeof(double)*100, cudaMemcpyDeviceToHost);
-	printf("%f.\n", (val[0]));
-	printf("%f.\n", (val[1]));
+	cudaMemcpy(val, ptr, sizeof(int)*size, cudaMemcpyDeviceToHost);
+	for (size_t i = 0; i < size; i++)
+	{
+		printf("%d.\n", (val[i]));
+	}
+	
 	free(val);
 	cudaFree(val);
 
@@ -124,9 +127,9 @@ __global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val)
 	*val = g_lock.getEntryAt(cudaPtr).entry.locked;
 }
 
-__global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr)
+__global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr)
 {
-	LocalMetadata<double> local_data = LocalMetadata<double>(&g_lock);
+	LocalMetadata<int> local_data = LocalMetadata<int>(&g_lock);
 	size_t length = g_lock.getLength();
 	/*size_t count = blockDim.x*gridDim.x;
 	unsigned int tmpOne = 0;
@@ -141,7 +144,7 @@ __global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr)
 	{
 		tmpTwo++;
 	}*/
-	double val = 0;
+	int val = 0;
 	do
 	{
 		local_data.txStart();
@@ -166,6 +169,10 @@ __global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr)
 			break;
 		}
 	} while (true);
+	/*if (tmp == 3)
+	{
+		printf("thread %lu, val %d\n", uniqueIndex(), val);
+	}*/
 	//printf("thread %u, val %d\n", uniqueIndex(), val);
 }
 

@@ -20,13 +20,15 @@ class CUDASet
 private:
 	size_t realCount;
 	size_t Count;
-	T cudaPtr[100];
+	T cudaPtr[10];
 
 public:	
 	__device__ CUDASet()
 	{
 		Count = 0;
-		realCount = 100;
+		realCount = 10;
+		T cudaPtr[10];
+		memset(cudaPtr, 0, 10 * sizeof(T));
 	}
 
 	__host__ __device__ CUDASet(const CUDASet& set)
@@ -59,7 +61,7 @@ public:
 			printf("out of range error, thread %u", uniqueIndex());
 			return NULL;
 		}
-		return (cudaPtr + index);
+		return &(cudaPtr[index]);
 	}
 
 	//
@@ -69,7 +71,7 @@ public:
 		{
 			printf("out of range error, thread %u", uniqueIndex());
 		}
-		memcpy(valuePtr, cudaPtr + index, sizeof(T));
+		memcpy(valuePtr, &(cudaPtr[index]), sizeof(T));
 	}
 	//
 

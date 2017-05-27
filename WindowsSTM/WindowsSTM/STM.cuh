@@ -5,7 +5,7 @@
 
 #define MAX_VERSION 2047
 
-typedef	struct
+typedef	struct __align__(4)
 {
 	unsigned version : 11;
 	unsigned owner : 19;
@@ -21,11 +21,12 @@ typedef union
 
 
 
-typedef	struct
+typedef	struct __align__(4)
 {
 	unsigned version : 11;
-	unsigned index : 20;
+	unsigned index : 19;
 	unsigned locked : 1;
+	unsigned pre_locked : 1;
 }LocalLockEntry;
 
 template<typename T>
@@ -42,12 +43,6 @@ struct WriteEntry
 	T* cudaPtr;
 	T value;
 };
-
-typedef	struct
-{
-	unsigned int memSize;
-	unsigned int wordSize;
-}GlobalLockTableInfo;
 
 class GlobalLockTable
 {
@@ -99,14 +94,13 @@ public:
 
 	__device__ GlobalLockEntry getEntryAt(unsigned long index)
 	{
-		checkIndex(index);
 		return _glt.At(index);
 	}
 
 	__device__ GlobalLockEntry* getEntryAtPtr(unsigned long index)
 	{
 		checkIndex(index);
-		return _glt.AtPtr(index);
+		return (GlobalLockEntry*)_glt.AtPtr(index);
 	}
 
 	template<typename T>
@@ -130,7 +124,7 @@ public:
 	__device__ unsigned long hash(void* cudaPtr)
 	{
 		//TODO control range
-		/*uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
+		uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
 		size_t tableIndex = 0;
 		for (size_t i = 0; i < _lengthInfo; i++)
 		{
@@ -145,9 +139,9 @@ public:
 				return tableIndex;
 			}
 		}		
-		printf("ERROR\n");*/
+		printf("ERROR\n");
 		//printf("%u, %u \n", _info.At(0).x, _info.At(0).y);
-		return (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr))) / _info.At(0).y;
+		return 0;
 	}
 
 	__host__ void Dispose()
@@ -167,7 +161,6 @@ class LocalMetadata
 {
 private:
 	GlobalLockTable* g_lock;
-	const unsigned int sizeBuf = 1000;
 	CUDASet<ReadEntry<T> > readSet;
 	CUDASet<WriteEntry<T> > writeSet;
 	CUDASet<LocalLockEntry > lockSet;
@@ -224,6 +217,7 @@ private:
 				preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
 			} while (atomicCAS((int*)g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index), \
 				tmpLock.i, preLockVal.i) != tmpLock.i);
+			lockSet.getByIndex(i)->pre_locked == 1;
 		}
 		return true;
 	}
@@ -292,9 +286,12 @@ public:
 			{
 				ReadEntry<T> tmpReadEntry;
 				tmpReadEntry.cudaPtr = ptr;
-				//tmpReadEntry.value = *ptr;
-				memcpy(&tmpReadEntry.value, ptr, sizeof(T));
-				tmpReadEntry.version = g_lock->getEntryAt<T>(ptr).entry.version;
+				tmpReadEntry.value = *ptr;
+				//tmpReadEntry.value = (T)atomicAdd((int*)ptr,0);
+				//GlobalLockEntry tmpEntry;
+				//tmpEntry.i = atomicAdd((int*)g_lock->getEntryAtPtr<T>(ptr), 0);
+				//tmpReadEntry.version = tmpEntry.entry.version;
+				tmpReadEntry.version = g_lock->getEntryAtPtr<T>(ptr)->entry.version;
 				readSet.Add(tmpReadEntry);
 				val = tmpReadEntry.value;
 			}
@@ -365,9 +362,9 @@ public:
 		unsigned int length = writeSet.getCount();
 		for (size_t i = 0; i < length; i++)
 		{
-			//*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
+			*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
 
-			memcpy(writeSet.getByIndex(i)->cudaPtr, &(writeSet.getByIndex(i)->value), sizeof(T));
+			//memcpy(writeSet.getByIndex(i)->cudaPtr, &(writeSet.getByIndex(i)->value), sizeof(T));
 
 			/*WriteEntry<T> tmp;
 			writeSet.getByIndex(i, &tmp);
@@ -379,28 +376,30 @@ public:
 		{
 			if (lockSet.getByIndex(i)->version < MAX_VERSION)
 			{
-				(*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version += 1;
+				(*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version = lockSet.getByIndex(i)->version + 1;
 			}
 			else
 			{
 				(*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version = 0;
 			}
 		}
+		__threadfence();
 	}
 
 
 	__device__ void releaseLocks()
 	{
 		unsigned int length = lockSet.getCount();
-		GlobalLockEntry preLockVal;
+		GlobalLockEntry lockVal;
 		GlobalLockEntry unLockVal;
+		GlobalLockEntry preLockVal;
 		GlobalLockEntry tmpLock;
 
 		for (size_t i = 0; i < length; i++)
 		{
 			tmpLock = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
 			unLockVal = calcUnlockVal(tmpLock.entry.version);
-			if (tmpLock.entry.pre_locked == 1)
+			if (/*lockSet.getByIndex(i)->pre_locked == 1 &&*/ tmpLock.entry.pre_locked == 1)
 			{
 				preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
 				atomicCAS((int*)g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index), \
@@ -412,7 +411,7 @@ public:
 		{
 			tmpLock = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
 			unLockVal = calcUnlockVal(tmpLock.entry.version);
-			if (lockSet.getByIndex(i)->locked == 1)
+			if (lockSet.getByIndex(i)->locked == 1 /*&& tmpLock.entry.locked == 1*/)
 			{
 				*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)) = unLockVal;
 			}
@@ -453,6 +452,6 @@ __host__ int hey3();
 __host__ int testGlt();
 __global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val);
 __global__ void changeArray(CUDAArray<WriteEntry<int> > arr, int* ptr, int val);
-__global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr);
+__global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr);
 
 #endif
