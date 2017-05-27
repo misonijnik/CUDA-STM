@@ -22,23 +22,11 @@ private:
 	size_t Count;
 	T cudaPtr[100];
 
-	void __device__ upsize()
-	{
-		T* tmpPtr = (T*)malloc(2*realCount*sizeof(T));
-		memcpy(tmpPtr, cudaPtr, sizeof(T)*(realCount));
-		realCount *= 2;
-		free(cudaPtr);
-		cudaPtr = tmpPtr;
-	}	
-
 public:	
-	
-
 	__device__ CUDASet()
 	{
 		Count = 0;
-		realCount = 10;
-		//cudaPtr = (T*)malloc(realCount * sizeof(T));
+		realCount = 100;
 	}
 
 	__host__ __device__ CUDASet(const CUDASet& set)
@@ -57,7 +45,6 @@ public:
 	{
 		if (Count == realCount)
 		{
-			//upsize();
 			printf("size error, thread %u", uniqueIndex());
 		}
 
