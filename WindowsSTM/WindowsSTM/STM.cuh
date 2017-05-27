@@ -43,15 +43,19 @@ struct WriteEntry
 	T value;
 };
 
+typedef	struct
+{
+	size_t memSize;
+	size_t wordSize;
+}GlobalLockTableInfo;
 
 class GlobalLockTable
 {
 private:
 	CUDAArray<GlobalLockEntry> _glt;
 	void* _sharedMemPtr;
-	size_t _memSize;
-	size_t _wordSize;
-	size_t _numberWordLock;
+	CUDAArray<GlobalLockTableInfo> _info;
+	unsigned int _lengthInfo;
 	size_t _length;
 
 	__device__ void checkIndex(unsigned long tmp)
@@ -73,13 +77,16 @@ public:
 		_glt = table._glt;
 	}*/
 
-	__host__ GlobalLockTable(void* sharedMemPtr, size_t wordSize, size_t memSize, size_t numberWordLock)
+	__host__ GlobalLockTable(void* sharedMemPtr, GlobalLockTableInfo info[], unsigned int lengthInfo)
 	{
 		_sharedMemPtr = sharedMemPtr;
-		_wordSize = wordSize;
-		_memSize = memSize*_wordSize;
-		_numberWordLock = numberWordLock;
-		_length = memSize /_numberWordLock;
+		_info = CUDAArray<GlobalLockTableInfo>(info, lengthInfo);
+		_lengthInfo = lengthInfo;
+		_length = 0;
+		for (size_t i = 0; i < lengthInfo; i++)
+		{
+			_length += info[i].memSize / info[i].wordSize;
+		}
 		_glt = CUDAArray<GlobalLockEntry>(_length);
 	}
 
@@ -118,12 +125,26 @@ public:
 		_glt.SetAt(hash(cudaPtr), entry);
 	}
 
-	__host__ __device__ unsigned long hash(void* cudaPtr)
+	__device__ unsigned long hash(void* cudaPtr)
 	{
 		//TODO control range
-		unsigned long tmp = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)))/(_wordSize*_numberWordLock);
-		
-		return tmp;
+		uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
+		size_t tableIndex = 0;
+		for (size_t i = 0; i < _lengthInfo; i++)
+		{
+			if (tmpIndex >= _info.At(i).memSize)
+			{
+				tableIndex += _info.At(i).memSize / _info.At(i).wordSize;
+				tmpIndex -= _info.At(i).memSize;
+			}
+			else
+			{
+				tableIndex += tmpIndex / _info.At(i).wordSize;
+				return tableIndex;
+			}
+		}		
+		printf("ERROR\n");
+		return 0;
 	}
 
 	__host__ void Dispose()

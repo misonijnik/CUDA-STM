@@ -40,7 +40,10 @@ __host__ int hey3()
 	cudaMemset(ptr, 0, sizeof(double) * 100);
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	GlobalLockTable g_lock = GlobalLockTable(ptr, sizeof(double), 100, 1);
+	GlobalLockTableInfo info[1];
+	info[0].memSize = sizeof(double) * 100;
+	info[0].wordSize = sizeof(double);
+	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	cudaCheckError();
 	testCorrectSTM<<<100,1024>>>(g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
@@ -99,7 +102,10 @@ __host__ int testGlt()
 	cudaCheckError();
 	int* value;
 	cudaMalloc((void**)&value, sizeof(int));
-	GlobalLockTable g_lock = GlobalLockTable(ptr, sizeof(int), 4, 1);
+	GlobalLockTableInfo info[1];
+	info[0].memSize = sizeof(int) * 4;
+	info[0].memSize = sizeof(int);
+	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	testGltKernel<<<1,1>>>(g_lock, ptr, value);
 	int* val = (int*)malloc(sizeof(int));
 	cudaMemcpy(val, value, sizeof(int), cudaMemcpyDeviceToHost);
@@ -123,9 +129,9 @@ __global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr)
 {
 	LocalMetadata<double> local_data = LocalMetadata<double>(&g_lock);
 	size_t length = g_lock.getLength();
-	size_t count = blockDim.x*gridDim.x;
+	/*size_t count = blockDim.x*gridDim.x;
 	unsigned int tmpOne = 0;
-	unsigned int tmpTwo = 0;
+	unsigned int tmpTwo = 0;*/
 	unsigned int tmp = uniqueIndex();
 	tmp = tmp % 100;
 	/*if (uniqueIndex() + 1 > count/2)

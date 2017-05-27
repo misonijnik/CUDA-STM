@@ -122,7 +122,7 @@ public:
 		Length = arr.Length;
 	}
 
-	__host__ CUDAArray(T* cpuPtr, int length)
+	__host__ CUDAArray(T* cpuPtr, unsigned int length)
 	{
 		Length = length;
 		cudaError_t error = cudaMalloc((void**)&cudaPtr, length*sizeof(T));
