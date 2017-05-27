@@ -25,35 +25,44 @@ __host__ int hey()
 __host__ int hey3()
 {
 	size_t size;
-	cudaDeviceGetLimit(&size, cudaLimitMallocHeapSize);
+	//cudaDeviceGetLimit(&size, cudaLimitMallocHeapSize);
 	//cudaDeviceSetLimit(cudaLimitMallocHeapSize, size * 2);
-	printf("%u.\n", size);
+	//printf("%u.\n", size);
+	size = 100;
+
 	double* ptr;
-	cudaMalloc((void**)&ptr, sizeof(double)*100);
+	cudaMalloc((void**)&ptr, sizeof(double)*size);
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	double* val = (double*)malloc(sizeof(double)*100);
-	cudaCheckError();
-	val[0] = 0;
-	val[1] = 0;
+
+	double* val = (double*)malloc(sizeof(double)*size);
+
 	//cudaMemcpy(ptr, val, sizeof(int)*100, cudaMemcpyHostToDevice);
-	cudaMemset(ptr, 0, sizeof(double) * 100);
+	cudaMemset(ptr, 0, sizeof(double) * size);
 	cudaDeviceSynchronize();
 	cudaCheckError();
+
 	uint2 info[1];
-	info[0] = make_uint2(sizeof(double) * 100, sizeof(double));
+	info[0] = make_uint2(sizeof(double) * size, sizeof(double));
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	cudaCheckError();
-	testCorrectSTM<<<1000,1024>>>(g_lock, ptr);//todo fix error with more block
+
+	testCorrectSTM << <2000, 1024 >> > (g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
 	cudaCheckError();
-	g_lock.Dispose();
-	cudaMemcpy(val, ptr, sizeof(double)*100, cudaMemcpyDeviceToHost);
-	printf("%f.\n", (val[0]));
-	printf("%f.\n", (val[1]));
-	free(val);
-	cudaFree(val);
 
+	g_lock.Dispose();
+	cudaCheckError();
+	cudaMemcpy(val, ptr, sizeof(double)*size, cudaMemcpyDeviceToHost);
+	cudaCheckError();
+	for (size_t i = 0; i < size; i++)
+	{
+		printf("%f.\n", (val[i]));
+	}
+
+	free(val);
+	cudaFree(ptr);
+	cudaCheckError();
 	return 0;
 }
 
@@ -63,16 +72,16 @@ __host__ int hey2()
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	int* ptr;
-	cudaMalloc((void**)&ptr, sizeof(int)*2);
+	cudaMalloc((void**)&ptr, sizeof(int) * 2);
 	int* ptr2 = ptr + 1;
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	printf("%lu.\n", (uintptr_t)ptr);
 	printf("%lu.\n", (uintptr_t)(ptr2));
-	printf("%lu.\n", ((uintptr_t)(ptr2) - (uintptr_t)(ptr)));
+	printf("%lu.\n", ((uintptr_t)(ptr2)-(uintptr_t)(ptr)));
 	printf("%p.\n", (ptr2));
 	printf("%p.\n", (void*)(19662336));
-	changeArray<<<1,1>>>(hmm, ptr, 7);
+	changeArray << <1, 1 >> > (hmm, ptr, 7);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 
@@ -82,7 +91,7 @@ __host__ int hey2()
 	cudaCheckError();
 
 	int* tmp = (int*)malloc(sizeof(int));
-	*tmp= entryPtr[0].value;
+	*tmp = entryPtr[0].value;
 	int intTmp = *tmp;
 	printf("Здравствуй, %d мир!\n", intTmp);
 	cudaCheckError();
@@ -96,7 +105,7 @@ __host__ int hey2()
 __host__ int testGlt()
 {
 	int* ptr;
-	cudaMalloc((void**)&ptr, sizeof(int)*4);
+	cudaMalloc((void**)&ptr, sizeof(int) * 4);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	int* value;
@@ -105,7 +114,7 @@ __host__ int testGlt()
 	info[0].x = sizeof(int) * 4;
 	info[0].y = sizeof(int);
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
-	testGltKernel<<<1,1>>>(g_lock, ptr, value);
+	testGltKernel << <1, 1 >> > (g_lock, ptr, value);
 	int* val = (int*)malloc(sizeof(int));
 	cudaMemcpy(val, value, sizeof(int), cudaMemcpyDeviceToHost);
 	printf("%d.\n", (*val));
@@ -120,7 +129,7 @@ __global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val)
 
 	g_lock.setEntryAt(cudaPtr, tmp);
 	tmp.entry.locked = 1;
-	g_lock.setEntryAt(cudaPtr+1, tmp);
+	g_lock.setEntryAt(cudaPtr + 1, tmp);
 	*val = g_lock.getEntryAt(cudaPtr).entry.locked;
 }
 
@@ -133,33 +142,25 @@ __global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr)
 	unsigned int tmpTwo = 0;*/
 	unsigned int tmp = uniqueIndex();
 	tmp = tmp % 100;
-	/*if (uniqueIndex() + 1 > count/2)
-	{
-		tmpOne++;
-	}
-	else 
-	{
-		tmpTwo++;
-	}*/
 	double val = 0;
 	do
 	{
 		local_data.txStart();
 		val = local_data.txRead(cudaPtr + tmp);
-		if(local_data.isAborted())
+		if (local_data.isAborted())
 		{
 			local_data.releaseLocks();
 			continue;
 		}
 		val++;
 		local_data.txWrite(cudaPtr + tmp, val);
-		if(local_data.isAborted())
+		if (local_data.isAborted())
 		{
 			local_data.releaseLocks();
 			continue;
 		}
 
-		if(local_data.txValidate())
+		if (local_data.txValidate())
 		{
 			local_data.txCommit();
 			local_data.releaseLocks();

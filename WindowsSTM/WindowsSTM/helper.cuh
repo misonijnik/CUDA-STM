@@ -20,13 +20,13 @@ class CUDASet
 private:
 	size_t realCount;
 	size_t Count;
-	T cudaPtr[100];
+	T cudaPtr[10];
 
 public:	
 	__device__ CUDASet()
 	{
 		Count = 0;
-		realCount = 100;
+		realCount = 10;
 	}
 
 	__host__ __device__ CUDASet(const CUDASet& set)
@@ -72,16 +72,6 @@ public:
 		memcpy(valuePtr, cudaPtr + index, sizeof(T));
 	}
 	//
-
-	__device__ void Clear()
-	{
-		Count = 0;
-	}
-
-	__device__ void Dispose()
-	{
-		free(cudaPtr);
-	}
 
 	__device__  ~CUDASet()
 	{
@@ -157,11 +147,7 @@ public:
 
 	__host__ void Dispose()
 	{
-		if (!isDisposed)
-		{
-			cudaFree(cudaPtr);
-			isDisposed = true;
-		}		
+		cudaFree(cudaPtr);
 	}
 
 	__host__ ~CUDAArray()
