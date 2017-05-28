@@ -2,6 +2,7 @@
 #define CUDASTM
 #include "helper.cuh"
 #include "CUDAStructures.cuh"
+#include <cuda_runtime.h>
 
 #define MAX_VERSION 2047
 
@@ -29,20 +30,20 @@ typedef	struct __align__(4)
 	unsigned locked : 1;
 }LocalLockEntry;
 
-template<typename T>
-struct ReadEntry
+typedef struct 
 {
-	T* cudaPtr;
-	T value;
+	void* cudaPtr;
+	unsigned int size;
+	void* value;
 	unsigned version : 11;
-};
+}ReadEntry;
 
-template<typename T>
-struct WriteEntry
+typedef struct
 {
-	T* cudaPtr;
-	T value;
-};
+	void* cudaPtr;
+	unsigned int size;
+	void* value;
+}WriteEntry;
 
 typedef	struct
 {
@@ -66,18 +67,8 @@ private:
 			printf("error %lu\n", tmp);
 		}
 	}
+
 public:
-
-	/*__host__ __device__ GlobalLockTable(const GlobalLockTable& table)
-	{
-		_sharedMemPtr = table._sharedMemPtr;
-		_wordSize = table._wordSize;
-		_memSize = table._memSize;
-		_numberWordLock = table._numberWordLock;
-		_length = table._length;
-		_glt = table._glt;
-	}*/
-
 	__host__ GlobalLockTable(void* sharedMemPtr, uint2* info, unsigned int lengthInfo)
 	{
 		_sharedMemPtr = sharedMemPtr;
@@ -110,20 +101,17 @@ public:
 		return _glt.AtPtr(index);
 	}
 
-	template<typename T>
-	__device__ GlobalLockEntry getEntryAt(T* cudaPtr)
+	__device__ GlobalLockEntry getEntryAt(void* cudaPtr)
 	{
 		return _glt.At(hash(cudaPtr));
 	}
 
-	template<typename T>
-	__device__ GlobalLockEntry* getEntryAtPtr(T* cudaPtr)
+	__device__ GlobalLockEntry* getEntryAtPtr(void* cudaPtr)
 	{
 		return _glt.AtPtr(hash(cudaPtr));
 	}
 
-	template<typename T>
-	__device__ void setEntryAt(T* cudaPtr, GlobalLockEntry entry)
+	__device__ void setEntryAt(void* cudaPtr, GlobalLockEntry entry)
 	{
 		_glt.SetAt(hash(cudaPtr), entry);
 	}
@@ -172,14 +160,14 @@ public:
 
 };
 
-template<typename T>
+
 class LocalMetadata
 {
 private:
 	GlobalLockTable* g_lock;
-	CUDASet<ReadEntry<T> > readSet;
-	CUDASet<WriteEntry<T> > writeSet;
-	CUDASet<LocalLockEntry > lockSet;
+	CUDASet<ReadEntry> readSet;
+	CUDASet<WriteEntry> writeSet;
+	CUDASet<LocalLockEntry> lockSet;
 	bool abort;
 
 	__device__ GlobalLockEntry calcPreLockedVal(unsigned int version, unsigned int index)
@@ -264,6 +252,7 @@ private:
 				releaseLocks();
 				return false;
 			}
+			lockSet.getByIndex(i)->pre_locked = 0;
 			lockSet.getByIndex(i)->locked = 1;
 		}
 		/*for (size_t i = 0; i < lockSet.getCount(); i++)
@@ -292,16 +281,17 @@ public:
 
 	__device__ void txStart()
 	{
-		readSet = CUDASet<ReadEntry<T> >();
-		writeSet = CUDASet<WriteEntry<T> >();
+		readSet = CUDASet<ReadEntry>();
+		writeSet = CUDASet<WriteEntry>();
 		lockSet = CUDASet<LocalLockEntry>();
 		abort = false;
 	}
 
+	template<typename T>
 	__device__ T txRead(T* ptr)
 	{
 		T val;
-		if(g_lock->getEntryAt<T>(ptr).entry.locked == 0)
+		if(g_lock->getEntryAt(ptr).entry.locked == 0)
 		{
 			bool isFound = false;
 			unsigned int length = writeSet.getCount();
@@ -310,24 +300,24 @@ public:
 				if (writeSet.getByIndex(i)->cudaPtr == ptr)
 				{
 					isFound = true;
-					val = writeSet.getByIndex(i)->value;
+					memcpy(&val, writeSet.getByIndex(i)->value, sizeof(T));
+					//val = writeSet.getByIndex(i)->value;
 					break;
 				}
 			}
 			if(!isFound)
 			{
-				ReadEntry<T> tmpReadEntry;
+				ReadEntry tmpReadEntry;
 				tmpReadEntry.cudaPtr = ptr;
 
-
-				tmpReadEntry.value = *ptr;
-
-
-				tmpReadEntry.version = g_lock->getEntryAt<T>(ptr).entry.version;
+				T value = *ptr;
+				tmpReadEntry.value = &value;
+				tmpReadEntry.size = sizeof(T);
+				tmpReadEntry.version = g_lock->getEntryAt(ptr).entry.version;
 
 
 				readSet.Add(tmpReadEntry);
-				val = tmpReadEntry.value;
+				val = value;
 			}
 		}
 		else
@@ -338,6 +328,7 @@ public:
 		return val;
 	}
 
+	template<typename T>
 	__device__ void txWrite(T* ptr, T val)
 	{
 		if(g_lock->getEntryAt(ptr).entry.locked == 0)
@@ -349,19 +340,20 @@ public:
 				if (writeSet.getByIndex(i)->cudaPtr == ptr)
 				{
 					isFound = true;
-					writeSet.getByIndex(i)->value = val;
+					writeSet.getByIndex(i)->value = &val;
 					break;
 				}
 			}
 			if(!isFound)
 			{
-				WriteEntry<T> tmpWriteEntry;
-				tmpWriteEntry.value = val;
+				WriteEntry tmpWriteEntry;
+				tmpWriteEntry.value = &val;
+				tmpWriteEntry.size = sizeof(T);
 				tmpWriteEntry.cudaPtr = ptr;
 				writeSet.Add(tmpWriteEntry);
 				LocalLockEntry tmpLocalLockEntry;
 				tmpLocalLockEntry.index = g_lock->hash(ptr);
-				tmpLocalLockEntry.version = g_lock->getEntryAt<T>(ptr).entry.version;
+				tmpLocalLockEntry.version = g_lock->getEntryAt(ptr).entry.version;
 				lockSet.Add(tmpLocalLockEntry);
 			}
 		}
@@ -378,7 +370,7 @@ public:
 			unsigned int length = readSet.getCount();
 			for (size_t i = 0; i < length; i++)
 			{				
-				if (g_lock->getEntryAt<T>(readSet.getByIndex(i)->cudaPtr).entry.version != readSet.getByIndex(i)->version)
+				if (g_lock->getEntryAt(readSet.getByIndex(i)->cudaPtr).entry.version != readSet.getByIndex(i)->version)
 				{
 					return false;
 				}				
@@ -404,9 +396,9 @@ public:
 		for (size_t i = 0; i < length; i++)
 		{
 			
-			*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
+			//*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
 
-			//memcpy(writeSet.getByIndex(i)->cudaPtr, &(writeSet.getByIndex(i)->value), sizeof(T));
+			memcpy(writeSet.getByIndex(i)->cudaPtr, writeSet.getByIndex(i)->value, writeSet.getByIndex(i)->size);
 
 			/*WriteEntry<T> tmp;
 			writeSet.getByIndex(i, &tmp);
@@ -417,10 +409,10 @@ public:
 		length = lockSet.getCount();
 		for (size_t i = 0; i < length; i++)
 		{
-			if (lockSet.getByIndex(i)->index == 0)
+			/*if (lockSet.getByIndex(i)->index == 0)
 			{
 				printf("thread %u: version %u %u\n", uniqueIndex(), (*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version, lockSet.getByIndex(i)->version + 1);
-			}
+			}*/
 			if (lockSet.getByIndex(i)->version < MAX_VERSION)
 			{
 				(*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version = lockSet.getByIndex(i)->version + 1;
@@ -468,12 +460,12 @@ public:
 		return abort;
 	}
 
-	__device__ CUDASet<ReadEntry<T> >* getReadSet()
+	__device__ CUDASet<ReadEntry>* getReadSet()
 	{
 		return &readSet;
 	}
 
-	__device__ CUDASet<WriteEntry<T> >* getWriteSet()
+	__device__ CUDASet<WriteEntry>* getWriteSet()
 	{
 		return &writeSet;
 	}
@@ -488,11 +480,11 @@ public:
 
 
 __host__ int hey();
-__host__ int hey2();
+//__host__ int hey2();
 __host__ int hey3();
 __host__ int testGlt();
 __global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val);
-__global__ void changeArray(CUDAArray<WriteEntry<int> > arr, int* ptr, int val);
+__global__ void changeArray(CUDAArray<WriteEntry> arr, int* ptr, int val);
 __global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr);
 
 #endif

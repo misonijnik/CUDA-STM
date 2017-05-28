@@ -47,7 +47,7 @@ __host__ int hey3()
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	cudaCheckError();
 
-	testCorrectSTM << <100, 10 >> > (g_lock, ptr);//todo fix error with more block
+	testCorrectSTM << <100, 1024 >> > (g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
 	cudaCheckError();
 
@@ -66,9 +66,9 @@ __host__ int hey3()
 	return 0;
 }
 
-__host__ int hey2()
+/*__host__ int hey2()
 {
-	CUDAArray<WriteEntry<int> > hmm = CUDAArray<WriteEntry<int> >(10);
+	CUDAArray<WriteEntry> hmm = CUDAArray<WriteEntry>(10);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 	int* ptr;
@@ -85,7 +85,7 @@ __host__ int hey2()
 	cudaDeviceSynchronize();
 	cudaCheckError();
 
-	WriteEntry<int>* entryPtr;
+	WriteEntry* entryPtr;
 	entryPtr = hmm.GetData();
 
 	cudaCheckError();
@@ -100,7 +100,7 @@ __host__ int hey2()
 	cudaFree(ptr);
 
 	return 0;
-}
+}*/
 
 __host__ int testGlt()
 {
@@ -135,7 +135,7 @@ __global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val)
 
 __global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr)
 {
-	LocalMetadata<int> local_data = LocalMetadata<int>(&g_lock);
+	LocalMetadata local_data = LocalMetadata(&g_lock);
 	size_t length = g_lock.getLength();
 	/*size_t count = blockDim.x*gridDim.x;
 	unsigned int tmpOne = 0;
@@ -146,14 +146,14 @@ __global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr)
 	do
 	{
 		local_data.txStart();
-		val = local_data.txRead(cudaPtr + tmp);
+		val = local_data.txRead<int>(cudaPtr + tmp);
 		if (local_data.isAborted())
 		{
 			local_data.releaseLocks();
 			continue;
 		}
 		val++;
-		local_data.txWrite(cudaPtr + tmp, val);
+		local_data.txWrite<int>(cudaPtr + tmp, val);
 		if (local_data.isAborted())
 		{
 			local_data.releaseLocks();
@@ -170,11 +170,11 @@ __global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr)
 	//printf("thread %u, val %d\n", uniqueIndex(), val);
 }
 
-__global__ void changeArray(CUDAArray<WriteEntry<int> > arr, int* ptr, int val)
+__global__ void changeArray(CUDAArray<WriteEntry> arr, int* ptr, int val)
 {
-	WriteEntry<int> tmp;
+	WriteEntry tmp;
 	tmp.cudaPtr = ptr;
-	tmp.value = val;
+	tmp.value = &val;
 
 	arr.SetAt(0, tmp);
 }
