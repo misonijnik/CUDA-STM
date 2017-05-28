@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include "STM.cuh"
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
+
+int main(void)
+{
+	//hey2();
+	//hey();
+	//testGlt();
+	//hey3();
+	unsigned int tmp = calcPreLockedVal1(5, 6);
+	printf("%u\n", getVersion1(tmp));
+	getchar();
+	return 0;
+}
+
+__device__ __host__ unsigned int getVersion1(unsigned int val)
+{
+	return (val >> 21);
+}
+
+__device__ __host__ unsigned int getOwner1(unsigned int val)
+{
+	return (val << 11) >> 13;
+}
+
+__device__ __host__ unsigned int getPreLockBit1(unsigned int val)
+{
+	return (val >> 1) & 1;
+}
+
+__device__ __host__ unsigned int getLockBit1(unsigned int val)
+{
+	return val & 1;
+}
+
+__device__ __host__ void setVersion1(unsigned int* val, unsigned int version)
+{
+	unsigned int tmp;
+	tmp = *val;
+	*val = ((tmp << 11) >> 11) + (version << 21);
+}
+
+__device__ __host__ unsigned int calcPreLockedVal1(unsigned int version, unsigned int index)
+{
+	return version << 21 + index << 3 + 2;
+}
+
+__device__ __host__ unsigned int calcLockedVal1(unsigned int version)
+{
+	return version << 21 + 1;
+}
+
+__device__ __host__ unsigned int calcUnlockVal1(unsigned int version)
+{
+	return version << 21;
+}

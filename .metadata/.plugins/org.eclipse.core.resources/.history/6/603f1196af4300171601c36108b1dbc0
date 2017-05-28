@@ -1,0 +1,14 @@
+#include <stdio.h>
+#include "STM.cuh"
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
+
+int main(void)
+{
+	//hey2();
+	//hey();
+	//testGlt();
+	//hey3();
+	getchar();
+	return 0;
+}
