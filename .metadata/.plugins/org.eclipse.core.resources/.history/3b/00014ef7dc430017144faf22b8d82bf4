@@ -79,7 +79,7 @@ public:
 		_sharedMemPtr = sharedMemPtr;
 
 		cudaMalloc((void**)&_info, lengthInfo*sizeof(uint2));
-		cudaMemcpy(_info, info, lengthInfo*sizeof(uint2), cudaMemcpyHostToDevice);
+		cudaMemcpy(_info, info, lengthInfo*sizeof(uint2))
 		_lengthInfo = lengthInfo;
 
 		//printf("%u, %u \n", info[0].x, info[0].y);

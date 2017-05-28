@@ -79,7 +79,7 @@ public:
 		_sharedMemPtr = sharedMemPtr;
 
 		cudaMalloc((void**)&_info, lengthInfo*sizeof(uint2));
-		cudaMemcpy(_info, info, lengthInfo*sizeof(uint2), cudaMemcpyHostToDevice);
+		cudaMemcpy(_info, info, lengthInfo*sizeof(uint2))
 		_lengthInfo = lengthInfo;
 
 		//printf("%u, %u \n", info[0].x, info[0].y);
@@ -126,7 +126,7 @@ public:
 	__device__ unsigned long hash(void* cudaPtr)
 	{
 		//TODO control range
-		uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
+		/*uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
 		size_t tableIndex = 0;
 		for (size_t i = 0; i < _lengthInfo; i++)
 		{
@@ -142,7 +142,7 @@ public:
 				return tableIndex;
 			}
 		}
-		printf("ERROR\n");
+		printf("ERROR\n");*/
 		/*if (uniqueIndex() == 105)
 		{
 			printf("%lu one thread %lu\n", tableIndex, uniqueIndex());

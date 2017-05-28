@@ -59,9 +59,9 @@ typedef	struct
 class GlobalLockTable
 {
 private:
-	unsigned int* _glt;
+	CUDAArray<unsigned int> _glt;
 	void* _sharedMemPtr;
-	uint2* _info; // x - memSize, y - wordSize
+	CUDAArray<uint2> _info; // x - memSize, y - wordSize
 	unsigned int _lengthInfo;
 	size_t _length;
 
@@ -77,18 +77,16 @@ public:
 	__host__ GlobalLockTable(void* sharedMemPtr, uint2* info, unsigned int lengthInfo)
 	{
 		_sharedMemPtr = sharedMemPtr;
+		_info = CUDAArray<uint2>(info, lengthInfo);
 
-		cudaMalloc((void**)&_info, lengthInfo*sizeof(uint2));
-		cudaMemcpy(_info, info, lengthInfo*sizeof(uint2), cudaMemcpyHostToDevice);
 		_lengthInfo = lengthInfo;
-
 		//printf("%u, %u \n", info[0].x, info[0].y);
 		_length = 0;
 		for (size_t i = 0; i < lengthInfo; i++)
 		{
 			_length += info[i].x / info[i].y;
 		}
-		cudaMalloc((void**)&_glt, _length*sizeof(unsigned int));
+		_glt = CUDAArray<unsigned int>(_length);
 	}
 
 	__device__ size_t getLength()
@@ -99,28 +97,28 @@ public:
 	__device__ unsigned int getEntryAt(unsigned long index)
 	{
 		checkIndex(index);
-		return _glt[index];
+		return _glt.At(index);
 	}
 
 	__device__ unsigned int* getEntryAtPtr(unsigned long index)
 	{
 		checkIndex(index);
-		return _glt + index;
+		return _glt.AtPtr(index);
 	}
 
 	__device__ unsigned int getEntryAt(void* cudaPtr)
 	{
-		return _glt[hash(cudaPtr)];
+		return _glt.At(hash(cudaPtr));
 	}
 
 	__device__ unsigned int* getEntryAtPtr(void* cudaPtr)
 	{
-		return _glt + (hash(cudaPtr));
+		return _glt.AtPtr(hash(cudaPtr));
 	}
 
 	__device__ void setEntryAt(void* cudaPtr, unsigned int entry)
 	{
-		_glt[hash(cudaPtr)] = entry;
+		_glt.SetAt(hash(cudaPtr), entry);
 	}
 
 	__device__ unsigned long hash(void* cudaPtr)
@@ -130,19 +128,19 @@ public:
 		size_t tableIndex = 0;
 		for (size_t i = 0; i < _lengthInfo; i++)
 		{
-			if (tmpIndex >= _info[i].x)
+			if (tmpIndex >= _info.At(i).x)
 			{
-				tableIndex += _info[i].x / _info[i].y;
-				tmpIndex -= _info[i].x;
+				tableIndex += _info.At(i).x / _info.At(i).y;
+				tmpIndex -= _info.At(i).x;
 			}
 			else
 			{
-				tableIndex += tmpIndex / _info[i].y;
+				tableIndex += tmpIndex / _info.At(i).y;
 				//break;
 				return tableIndex;
 			}
 		}
-		printf("ERROR\n");
+		printf("ERROR");
 		/*if (uniqueIndex() == 105)
 		{
 			printf("%lu one thread %lu\n", tableIndex, uniqueIndex());
@@ -356,8 +354,8 @@ public:
 			{
 				ReadEntry tmpReadEntry;
 				tmpReadEntry.cudaPtr = ptr;
-				volatile T* atomicVal = ptr;
-				val = *atomicVal;
+
+				val = *ptr;
 				//memcpy(&val, ptr, sizeof(T));
 				//val = atomicAdd(ptr, 0);
 
@@ -367,12 +365,7 @@ public:
 
 				tmpReadEntry.size = sizeof(T);
 				//unsigned int tmpLock = atomicAdd(g_lock->getEntryAtPtr(ptr), 0);
-
-
-				//tmpReadEntry.version = getVersion(g_lock->getEntryAt(ptr));
-
-				volatile unsigned int* atomicEntry = g_lock->getEntryAtPtr(ptr);
-				tmpReadEntry.version = getVersion(*atomicEntry);
+				tmpReadEntry.version = getVersion(g_lock->getEntryAt(ptr));
 
 				/*if(uniqueIndex() == 0)
 				{
