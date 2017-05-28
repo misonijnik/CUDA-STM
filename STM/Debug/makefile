@@ -9,7 +9,6 @@ RM := rm -rf
 # All of the sources participating in the build are defined here
 -include sources.mk
 -include subdir.mk
--include src/structures/subdir.mk
 -include src/subdir.mk
 
 OS_SUFFIX := $(subst Linux,linux,$(subst Darwin/x86_64,darwin,$(shell uname -s)/$(shell uname -m)))
@@ -53,19 +52,19 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: libSTM.a
+all: STM
 
 # Tool invocations
-libSTM.a: $(OBJS) $(USER_OBJS)
+STM: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
-	@echo 'Invoking: NVCC Archiver'
-	nvcc  -lib -o  "libSTM.a" $(OBJS) $(USER_OBJS) $(LIBS)
+	@echo 'Invoking: NVCC Linker'
+	/usr/local/cuda-8.0/bin/nvcc --cudart static --relocatable-device-code=false -gencode arch=compute_30,code=compute_30 -gencode arch=compute_30,code=sm_30 -link -o  "STM" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(CC_DEPS)$(C++_DEPS)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(ARCHIVES)$(CU_DEPS)$(CPP_DEPS)$(C_DEPS) libSTM.a
+	-$(RM) $(CC_DEPS)$(C++_DEPS)$(EXECUTABLES)$(C_UPPER_DEPS)$(CXX_DEPS)$(OBJS)$(CU_DEPS)$(CPP_DEPS)$(C_DEPS) STM
 	-@echo ' '
 
 .PHONY: all clean dependents

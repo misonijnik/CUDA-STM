@@ -1,0 +1,12 @@
+#include <stdio.h>
+#include "STM.cuh"
+
+int main(void)
+{
+	//hey2();
+	//hey();
+	//testGlt();
+	hey3();
+	getchar();
+	return 0;
+}

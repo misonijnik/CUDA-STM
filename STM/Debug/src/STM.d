@@ -118,6 +118,5 @@ src/STM.o : ../src/STM.cu \
     /usr/include/stdint.h \
     /usr/include/x86_64-linux-gnu/bits/wchar.h \
     ../src/STM.cuh \
-    ../src/helper/helper.cuh \
-    ../src/structures/CUDAStructures.cuh \
-    ../src/structures/../helper/helper.cuh
+    ../src/helper.cuh \
+    ../src/CUDAStructures.cuh

@@ -1,11 +1,13 @@
 #ifndef CUDASTM
 #define CUDASTM
-#include "helper/helper.cuh"
-#include "structures/CUDAStructures.cuh"
+#include "helper.cuh"
+#include "CUDAStructures.cuh"
+#include <cuda_runtime.h>
+#include <device_launch_parameters.h>
 
-#define MAX_VERSION 524288
+#define MAX_VERSION 2047
 
-typedef	struct
+typedef	struct __align__(4)
 {
 	unsigned version : 11;
 	unsigned owner : 19;
@@ -13,65 +15,74 @@ typedef	struct
 	unsigned locked : 1;
 }gle;
 
+
 typedef union
 {
 	gle entry;
-	int i;
+	unsigned int i;
 }GlobalLockEntry;
 
 
 
-typedef	struct
+typedef	struct __align__(4)
 {
 	unsigned version : 11;
-	unsigned index : 20;
+	unsigned index : 19;
+	unsigned pre_locked : 1;
 	unsigned locked : 1;
 }LocalLockEntry;
 
-template<typename T>
-struct ReadEntry
+typedef struct 
 {
-	T* cudaPtr;
-	T value;
+	void* cudaPtr;
+	unsigned int size;
+	char value[16];
 	unsigned version : 11;
-};
+}ReadEntry;
 
-template<typename T>
-struct WriteEntry
+typedef struct
 {
-	T* cudaPtr;
-	T value;
-};
+	void* cudaPtr;
+	unsigned int size;
+	char value[16];
+}WriteEntry;
 
-template<typename T>
+typedef	struct
+{
+	unsigned int memSize;
+	unsigned int wordSize;
+}GlobalLockTableInfo;
+
 class GlobalLockTable
 {
 private:
 	CUDAArray<GlobalLockEntry> _glt;
-	T* _sharedMemPtr;
-	size_t _memSize;
-	size_t _wordSize;
-	size_t _numberWordLock;
+	void* _sharedMemPtr;
+	CUDAArray<uint2> _info; // x - memSize, y - wordSize
+	unsigned int _lengthInfo;
 	size_t _length;
-public:
 
-	/*__host__ __device__ GlobalLockTable(const GlobalLockTable& table)
+	__device__ void checkIndex(unsigned long tmp)
 	{
-		_sharedMemPtr = table._sharedMemPtr;
-		_wordSize = table._wordSize;
-		_memSize = table._memSize;
-		_numberWordLock = table._numberWordLock;
-		_length = table._length;
-		_glt = table._glt;
-	}*/
+		if (tmp > _length - 1)
+		{
+			printf("error %lu\n", tmp);
+		}
+	}
 
-	__host__ GlobalLockTable(T* sharedMemPtr, size_t memSize, size_t numberWordLock)
+public:
+	__host__ GlobalLockTable(void* sharedMemPtr, uint2* info, unsigned int lengthInfo)
 	{
 		_sharedMemPtr = sharedMemPtr;
-		_wordSize = sizeof(T);
-		_memSize = memSize*_wordSize;
-		_numberWordLock = numberWordLock;
-		_length = _memSize/(_wordSize*_numberWordLock);
+		_info = CUDAArray<uint2>(info, lengthInfo);
+
+		_lengthInfo = lengthInfo;
+		//printf("%u, %u \n", info[0].x, info[0].y);
+		_length = 0;
+		for (size_t i = 0; i < lengthInfo; i++)
+		{
+			_length += info[i].x / info[i].y;
+		}
 		_glt = CUDAArray<GlobalLockEntry>(_length);
 	}
 
@@ -80,47 +91,85 @@ public:
 		return _length;
 	}
 
-	__device__ GlobalLockEntry getEntryAt(unsigned int index)
+	__device__ GlobalLockEntry getEntryAt(unsigned long index)
 	{
+		checkIndex(index);
 		return _glt.At(index);
 	}
 
-	__device__ GlobalLockEntry* getEntryAtPtr(unsigned int index)
+	__device__ GlobalLockEntry* getEntryAtPtr(unsigned long index)
 	{
+		checkIndex(index);
 		return _glt.AtPtr(index);
 	}
 
-	__device__ GlobalLockEntry getEntryAt(T* cudaPtr)
+	__device__ GlobalLockEntry getEntryAt(void* cudaPtr)
 	{
 		return _glt.At(hash(cudaPtr));
 	}
 
-	__device__ GlobalLockEntry* getEntryAtPtr(T* cudaPtr)
+	__device__ GlobalLockEntry* getEntryAtPtr(void* cudaPtr)
 	{
 		return _glt.AtPtr(hash(cudaPtr));
 	}
 
-	__device__ void setEntryAt(T* cudaPtr, GlobalLockEntry entry)
+	__device__ void setEntryAt(void* cudaPtr, GlobalLockEntry entry)
 	{
 		_glt.SetAt(hash(cudaPtr), entry);
 	}
 
-	__host__ __device__ unsigned long hash(T* cudaPtr)
+	__device__ unsigned long hash(void* cudaPtr)
 	{
 		//TODO control range
-		unsigned long tmp = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)))/(_wordSize*_numberWordLock);
-		return tmp;
+		uintptr_t tmpIndex = (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr)));
+		size_t tableIndex = 0;
+		for (size_t i = 0; i < _lengthInfo; i++)
+		{
+			if (tmpIndex >= _info.At(i).x)
+			{
+				tableIndex += _info.At(i).x / _info.At(i).y;
+				tmpIndex -= _info.At(i).x;
+			}
+			else
+			{
+				tableIndex += tmpIndex / _info.At(i).y;
+				//break;
+				return tableIndex;
+			}
+		}
+		printf("ERROR");
+		/*if (uniqueIndex() == 105)
+		{
+			printf("%lu one thread %lu\n", tableIndex, uniqueIndex());
+			printf("%lu two thread %lu\n", (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr))) / _info.At(0).y, uniqueIndex());
+		}*/
+		
+		//printf("%u, %u \n", _info.At(0).x, _info.At(0).y);
+		//return (uintptr_t(cudaPtr) - (uintptr_t(_sharedMemPtr))) / _info.At(0).y;
+		return 0;
 	}
+
+	__host__ void Dispose()
+	{
+		//_glt.Dispose();
+		//_info.Dispose();
+	}
+
+	__host__ ~GlobalLockTable()
+	{
+		Dispose();
+	}
+
 };
 
-template<typename T>
+
 class LocalMetadata
 {
 private:
-	GlobalLockTable<T>* g_lock;
-	CUDALinkedList<ReadEntry<T> > readSet;
-	CUDALinkedList<WriteEntry<T> > writeSet;
-	CUDALinkedList<LocalLockEntry> lockSet;
+	GlobalLockTable* g_lock;
+	CUDASet<ReadEntry> readSet;
+	CUDASet<WriteEntry> writeSet;
+	CUDASet<LocalLockEntry> lockSet;
 	bool abort;
 
 	__device__ GlobalLockEntry calcPreLockedVal(unsigned int version, unsigned int index)
@@ -155,50 +204,64 @@ private:
 
 	__device__ bool tryPreLock()
 	{
-		Node<LocalLockEntry>* tmpNode = lockSet.getHead();
 		GlobalLockEntry tmpLock;
 		GlobalLockEntry preLockVal;
-		while(tmpNode != NULL)
+		unsigned int length = lockSet.getCount();
+		for (size_t i = 0; i < length; ++i)
 		{
 			do
 			{
-				tmpLock = g_lock->getEntryAt(tmpNode->value.index);
-				//printf("thread %u: %u %u, %u\n", uniqueIndex(), tmpLock.entry.version, tmpNode->value.version, tmpLock.entry.owner);
-				if(tmpLock.entry.version != tmpNode->value.version || \
+				tmpLock = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
+				
+				if (tmpLock.entry.version != lockSet.getByIndex(i)->version || \
 					tmpLock.entry.locked == 1 || \
 					(tmpLock.entry.pre_locked == 1 && tmpLock.entry.owner < uniqueIndex()))
 				{
 					releaseLocks();
 					return false;
 				}
-				preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
-			} while(atomicCAS((int*)g_lock->getEntryAtPtr(tmpNode->value.index), \
-					tmpLock.i, preLockVal.i) != tmpLock.i);
-			tmpNode = tmpNode->next;
+				preLockVal = calcPreLockedVal(lockSet.getByIndex(i)->version, uniqueIndex());
+			} while (atomicCAS(&(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)->i), \
+				tmpLock.i, preLockVal.i) != tmpLock.i);
+			lockSet.getByIndex(i)->pre_locked = 1;
 		}
+		/*for (size_t i = 0; i < lockSet.getCount(); i++)
+		{
+			if (lockSet.getByIndex(i)->index == 0)
+			{
+				GlobalLockEntry tmp = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
+				printf("thread %u: locked %u  owner %u version %u\n", uniqueIndex(), tmp.entry.pre_locked, tmp.entry.owner, tmp.entry.version);
+			}
+		}*/
 		return true;
 	}
 
 
 	__device__ bool tryLock()
 	{
-		Node<LocalLockEntry>* tmpNode = lockSet.getHead();
-		GlobalLockEntry tmpLock;
 		GlobalLockEntry preLockVal;
 		GlobalLockEntry finalLockVal;
-		while(tmpNode != NULL)
+		unsigned int length = lockSet.getCount();
+		for (size_t i = 0; i < length; ++i)
 		{
-			tmpLock = g_lock->getEntryAt(tmpNode->value.index);
-			preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
-			finalLockVal = calcLockedVal(tmpLock.entry.version);
-			if(atomicCAS((int*)(g_lock->getEntryAtPtr(tmpNode->value.index)), \
-					preLockVal.i, finalLockVal.i) != preLockVal.i)
+			preLockVal = calcPreLockedVal(lockSet.getByIndex(i)->version, uniqueIndex());
+			finalLockVal = calcLockedVal(lockSet.getByIndex(i)->version);
+			if (atomicCAS(&(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)->i), \
+				preLockVal.i, finalLockVal.i) != preLockVal.i)
 			{
 				releaseLocks();
 				return false;
 			}
-			tmpNode->value.locked = 1;
-			tmpNode = tmpNode->next;
+			lockSet.getByIndex(i)->pre_locked = 0;
+			lockSet.getByIndex(i)->locked = 1;
+		}
+		for (size_t i = 0; i < lockSet.getCount(); i++)
+		{
+			if (lockSet.getByIndex(i)->index == 0)
+			{
+				GlobalLockEntry tmp = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
+				printf("thread %u: locked %u  owner %u version %u\n", uniqueIndex(), tmp.entry.locked, tmp.entry.owner, tmp.entry.version);
+			}
 		}
 		return true;
 	}
@@ -210,7 +273,7 @@ public:
 		g_lock = NULL;
 	}
 
-	__device__ LocalMetadata(GlobalLockTable<T>* glt)
+	__device__ LocalMetadata(GlobalLockTable* glt)
 	{
 		abort = false;
 		g_lock = glt;
@@ -218,37 +281,52 @@ public:
 
 	__device__ void txStart()
 	{
-		readSet = CUDALinkedList<ReadEntry<T> >();
-		writeSet = CUDALinkedList<WriteEntry<T> >();
-		lockSet = CUDALinkedList<LocalLockEntry>();
+		readSet = CUDASet<ReadEntry>();
+		writeSet = CUDASet<WriteEntry>();
+		lockSet = CUDASet<LocalLockEntry>();
 		abort = false;
 	}
 
+	template<typename T>
 	__device__ T txRead(T* ptr)
 	{
 		T val;
 		if(g_lock->getEntryAt(ptr).entry.locked == 0)
 		{
 			bool isFound = false;
-			Node<WriteEntry<T> >* tmpNode = writeSet.getHead();
-			while(tmpNode != NULL)
+			unsigned int length = writeSet.getCount();
+			for (size_t i = 0; i < length; i++)
 			{
-				if(tmpNode->value.cudaPtr == ptr)
+				if (writeSet.getByIndex(i)->cudaPtr == ptr)
 				{
 					isFound = true;
-					val = tmpNode->value.value;
+					memcpy(&val, writeSet.getByIndex(i)->value, sizeof(T));
+					//val = writeSet.getByIndex(i)->value;
 					break;
 				}
-				tmpNode = tmpNode->next;
 			}
 			if(!isFound)
 			{
-				ReadEntry<T> tmpReadEntry;
+				ReadEntry tmpReadEntry;
 				tmpReadEntry.cudaPtr = ptr;
-				tmpReadEntry.value = *ptr;
+
+				val = *ptr;
+
+
+
+				//tmpReadEntry.value = &val;
+				memcpy(tmpReadEntry.value, &val, sizeof(T));
+
+
+				tmpReadEntry.size = sizeof(T);
 				tmpReadEntry.version = g_lock->getEntryAt(ptr).entry.version;
-				readSet.push(tmpReadEntry);
-				val = tmpReadEntry.value;
+
+				/*if(uniqueIndex() == 0)
+				{
+					printf("read val %d\n", *(int*)tmpReadEntry.value);
+				}*/
+
+				readSet.Add(tmpReadEntry);
 			}
 		}
 		else
@@ -259,32 +337,41 @@ public:
 		return val;
 	}
 
-	__device__ void txWrite(T* ptr, T val)
+	template<typename T>
+	__device__ void txWrite(T* ptr, T value)
 	{
+		T val = value;
 		if(g_lock->getEntryAt(ptr).entry.locked == 0)
 		{
 			bool isFound = false;
-			Node<WriteEntry<T> >* tmpNode = writeSet.getHead();
-			while(tmpNode != NULL)
+			unsigned int length = writeSet.getCount();
+			for (size_t i = 0; i < length; i++)
 			{
-				if(tmpNode->value.cudaPtr == ptr)
+				if (writeSet.getByIndex(i)->cudaPtr == ptr)
 				{
 					isFound = true;
-					tmpNode->value.value = val;
+					//writeSet.getByIndex(i)->value = &val;
+					memcpy(writeSet.getByIndex(i)->value, &val, sizeof(T));
 					break;
 				}
-				tmpNode = tmpNode->next;
 			}
 			if(!isFound)
 			{
-				WriteEntry<T> tmpWriteEntry;
-				tmpWriteEntry.value = val;
+				WriteEntry tmpWriteEntry;
+
+
+				//tmpWriteEntry.value = &val;
+				memcpy(tmpWriteEntry.value, &val, sizeof(T));
+
+
+				tmpWriteEntry.size = sizeof(T);
 				tmpWriteEntry.cudaPtr = ptr;
-				writeSet.push(tmpWriteEntry);
+				writeSet.Add(tmpWriteEntry);
+
 				LocalLockEntry tmpLocalLockEntry;
 				tmpLocalLockEntry.index = g_lock->hash(ptr);
 				tmpLocalLockEntry.version = g_lock->getEntryAt(ptr).entry.version;
-				lockSet.push(tmpLocalLockEntry);
+				lockSet.Add(tmpLocalLockEntry);
 			}
 		}
 		else
@@ -297,16 +384,14 @@ public:
 	{
 		if(tryPreLock() == true)
 		{
-			Node<ReadEntry<T> >* tmpNode = readSet.getHead();
-			while(tmpNode != NULL)
-			{
-				if(g_lock->getEntryAt(tmpNode->value.cudaPtr).entry.version != tmpNode->value.version)
+			unsigned int length = readSet.getCount();
+			for (size_t i = 0; i < length; i++)
+			{				
+				if (g_lock->getEntryAt(readSet.getByIndex(i)->cudaPtr).entry.version != readSet.getByIndex(i)->version)
 				{
-					releaseLocks();
 					return false;
-				}
-				tmpNode = tmpNode->next;
-			}
+				}				
+			}			
 			return tryLock();
 		}
 		else
@@ -317,63 +402,73 @@ public:
 
 	__device__ void txCommit()
 	{
-		Node<WriteEntry<T> >* tmpNode = writeSet.getHead();
-		while(tmpNode != NULL)
+		unsigned int length = writeSet.getCount();
+		/*for (size_t i = 0; i < lockSet.getCount(); i++)
 		{
-			//printf("thread %u, value1 %d, value2 %d\n", uniqueIndex(),*(tmpNode->value.cudaPtr), tmpNode->value.value);
-			*(tmpNode->value.cudaPtr) = tmpNode->value.value;
-			tmpNode = tmpNode->next;
+			if (lockSet.getByIndex(i)->index == 99)
+			{
+				printf("thread %u: %d, %d, %d\n", uniqueIndex(), *(int*)(readSet.getByIndex(i)->value), *(int*)(writeSet.getByIndex(i)->cudaPtr), *(int*)(writeSet.getByIndex(i)->value));
+			}
+		}*/
+		for (size_t i = 0; i < length; i++)
+		{
+			
+			//*(writeSet.getByIndex(i)->cudaPtr) = writeSet.getByIndex(i)->value;
+
+			memcpy(writeSet.getByIndex(i)->cudaPtr, writeSet.getByIndex(i)->value, writeSet.getByIndex(i)->size);
+
+			/*WriteEntry<T> tmp;
+			writeSet.getByIndex(i, &tmp);
+			*(writeSet.getByIndex(i)->cudaPtr) = tmp.value;*/
+			
 		}
 		__threadfence();
-		Node<LocalLockEntry>* tmpLockNode = lockSet.getHead();
-		while(tmpLockNode != NULL)
+		length = lockSet.getCount();
+		for (size_t i = 0; i < length; i++)
 		{
-			if(tmpLockNode->value.version < MAX_VERSION)
+			/*if (lockSet.getByIndex(i)->index == 0)
 			{
-				(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version +=1;
+				printf("thread %u: version %u %u\n", uniqueIndex(), (*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version, lockSet.getByIndex(i)->version + 1);
+			}*/
+			if (lockSet.getByIndex(i)->version < MAX_VERSION)
+			{
+				(*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version = lockSet.getByIndex(i)->version + 1;
 			}
 			else
 			{
-				(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version = 0;
+				(*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index))).entry.version = 0;
 			}
-			//printf("thread %u, version %u\n", uniqueIndex(),(*(g_lock->getEntryAtPtr(tmpLockNode->value.index))).entry.version);
-			tmpLockNode = tmpLockNode->next;
 		}
-		//printf("thread %u\n", uniqueIndex());
 	}
 
 
 	__device__ void releaseLocks()
 	{
-		Node<LocalLockEntry>* tmpNode = lockSet.getHead();
+		unsigned int length = lockSet.getCount();
 		GlobalLockEntry preLockVal;
 		GlobalLockEntry unLockVal;
 		GlobalLockEntry tmpLock;
 
-		while(tmpNode != NULL)
+		for (size_t i = 0; i < length; i++)
 		{
-			tmpLock = g_lock->getEntryAt(tmpNode->value.index);
+			tmpLock = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
 			unLockVal = calcUnlockVal(tmpLock.entry.version);
-			if(tmpLock.entry.pre_locked == 1)
+			if (lockSet.getByIndex(i)->pre_locked == 1 /*&& tmpLock.entry.pre_locked == 1*/)
 			{
 				preLockVal = calcPreLockedVal(tmpLock.entry.version, uniqueIndex());
-				atomicCAS((int*)g_lock->getEntryAtPtr(tmpNode->value.index), \
-						preLockVal.i, unLockVal.i);
+				atomicCAS(&(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)->i), \
+					preLockVal.i, unLockVal.i);
 			}
-			tmpNode = tmpNode->next;
 		}
 
-		tmpNode = lockSet.getHead();
-
-		while(tmpNode != NULL)
+		for (size_t i = 0; i < length; i++)
 		{
-			tmpLock = g_lock->getEntryAt(tmpNode->value.index);
+			tmpLock = g_lock->getEntryAt(lockSet.getByIndex(i)->index);
 			unLockVal = calcUnlockVal(tmpLock.entry.version);
-			if(tmpNode->value.locked == 1)
+			if (lockSet.getByIndex(i)->locked == 1)
 			{
-				*(g_lock->getEntryAtPtr(tmpNode->value.index)) = unLockVal;
+				*(g_lock->getEntryAtPtr(lockSet.getByIndex(i)->index)) = unLockVal;
 			}
-			tmpNode = tmpNode->next;
 		}
 	}
 
@@ -382,17 +477,17 @@ public:
 		return abort;
 	}
 
-	__device__ CUDALinkedList<ReadEntry<T> >* getReadSet()
+	__device__ CUDASet<ReadEntry>* getReadSet()
 	{
 		return &readSet;
 	}
 
-	__device__ CUDALinkedList<WriteEntry<T> >* getWriteSet()
+	__device__ CUDASet<WriteEntry>* getWriteSet()
 	{
 		return &writeSet;
 	}
 
-	__device__ CUDALinkedList<LocalLockEntry>* getLockSet()
+	__device__ CUDASet<LocalLockEntry>* getLockSet()
 	{
 		return &lockSet;
 	}
@@ -402,11 +497,11 @@ public:
 
 
 __host__ int hey();
-__host__ int hey2();
+//__host__ int hey2();
 __host__ int hey3();
 __host__ int testGlt();
-__global__ void testGltKernel(GlobalLockTable<int> g_lock, int* cudaPtr, int* val);
-__global__ void changeArray(CUDAArray<WriteEntry<int> > arr, int* ptr, int val);
-__global__ void testCorrectSTM(GlobalLockTable<int> g_lock, int* cudaPtr);
+__global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val);
+__global__ void changeArray(CUDAArray<WriteEntry> arr, int* ptr, int val);
+__global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr);
 
 #endif
