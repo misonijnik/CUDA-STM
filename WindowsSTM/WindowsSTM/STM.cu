@@ -30,34 +30,34 @@ __host__ int hey3()
 	//printf("%u.\n", size);
 	size = 100;
 
-	double* ptr;
-	cudaMalloc((void**)&ptr, sizeof(double)*size);
+	int* ptr;
+	cudaMalloc((void**)&ptr, sizeof(int)*size);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 
-	double* val = (double*)malloc(sizeof(double)*size);
+	int* val = (int*)malloc(sizeof(int)*size);
 
 	//cudaMemcpy(ptr, val, sizeof(int)*100, cudaMemcpyHostToDevice);
-	cudaMemset(ptr, 0, sizeof(double) * size);
+	cudaMemset(ptr, 0, sizeof(int) * size);
 	cudaDeviceSynchronize();
 	cudaCheckError();
 
 	uint2 info[1];
-	info[0] = make_uint2(sizeof(double) * size, sizeof(double));
+	info[0] = make_uint2(sizeof(int) * size, sizeof(int));
 	GlobalLockTable g_lock = GlobalLockTable(ptr, info, 1);
 	cudaCheckError();
 
-	testCorrectSTM << <100, 32 >> > (g_lock, ptr);//todo fix error with more block
+	testCorrectSTM << <100, 10 >> > (g_lock, ptr);//todo fix error with more block
 	cudaDeviceSynchronize();
 	cudaCheckError();
 
 	g_lock.Dispose();
 	cudaCheckError();
-	cudaMemcpy(val, ptr, sizeof(double)*size, cudaMemcpyDeviceToHost);
+	cudaMemcpy(val, ptr, sizeof(int)*size, cudaMemcpyDeviceToHost);
 	cudaCheckError();
 	for (size_t i = 0; i < size; i++)
 	{
-		printf("%f.\n", (val[i]));
+		printf("%u.\n", (val[i]));
 	}
 
 	free(val);
@@ -133,9 +133,9 @@ __global__ void testGltKernel(GlobalLockTable g_lock, int* cudaPtr, int* val)
 	*val = g_lock.getEntryAt(cudaPtr).entry.locked;
 }
 
-__global__ void testCorrectSTM(GlobalLockTable g_lock, double* cudaPtr)
+__global__ void testCorrectSTM(GlobalLockTable g_lock, int* cudaPtr)
 {
-	LocalMetadata<double> local_data = LocalMetadata<double>(&g_lock);
+	LocalMetadata<int> local_data = LocalMetadata<int>(&g_lock);
 	size_t length = g_lock.getLength();
 	/*size_t count = blockDim.x*gridDim.x;
 	unsigned int tmpOne = 0;
